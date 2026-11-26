@@ -1,0 +1,25 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# local mock data & env
+/.data/
+.env
+.env*.local
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+
+# macOS
+.DS_Store
+*.tsbuildinfo
+next-env.d.ts
