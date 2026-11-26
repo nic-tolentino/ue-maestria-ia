@@ -139,11 +139,6 @@ export function AdminDashboard() {
       const savedLocale = localStorage.getItem(LOCALE_STORAGE_KEY);
       if (savedLocale === "es" || savedLocale === "en") {
         setLocale(savedLocale);
-      } else if (
-        typeof navigator !== "undefined" &&
-        navigator.language.toLowerCase().startsWith("en")
-      ) {
-        setLocale("en");
       }
 
       const savedSecret = sessionStorage.getItem(ADMIN_SESSION_KEY);
