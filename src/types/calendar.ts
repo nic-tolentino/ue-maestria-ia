@@ -61,6 +61,36 @@ export interface GradingItem {
   dueDateLabelEn?: string;
 }
 
+export interface BilingualText {
+  es: string;
+  en: string;
+}
+
+export interface BibliographyItem {
+  citation: string;
+  kind: "basic" | "complementary";
+}
+
+export interface ProgramHighlight {
+  titleEs: string;
+  titleEn: string;
+  detailEs: string;
+  detailEn: string;
+}
+
+export interface ProgramOverview {
+  coDirectors: string;
+  welcomeEs: string;
+  welcomeEn: string;
+  tools: string[];
+  methodologyEs: string;
+  methodologyEn: string;
+  beyondClassroom: ProgramHighlight[];
+  supportEmail: string;
+  supportNoteEs: string;
+  supportNoteEn: string;
+}
+
 export interface ModuleInfo {
   id: string;
   code: string;
@@ -73,8 +103,25 @@ export interface ModuleInfo {
   semester?: "general" | 1 | 2 | "cert" | "tfm";
   descriptionEs?: string;
   descriptionEn?: string;
+  /** Official ECTS credit count (e.g. 6 for a core unit, 60 for program overview) */
+  ects?: number;
+  /** Total official student workload in hours (e.g. 150) */
+  workloadHours?: number;
   /** Canvas portal homepage URL for this module */
   canvasUrl?: string;
+  /** Path to the official Teaching Guide PDF under /public/guides/ */
+  guidePdfUrl?: string;
+  /** Official UE guide reference code (e.g. "6496b3ee") */
+  guideRef?: string;
+  /** Key syllabus topics from Section 4 (Contenidos) of the Teaching Guide */
+  topics?: BilingualText[];
+  /** Official passing criteria note from Section 7.1 */
+  passRuleEs?: string;
+  passRuleEn?: string;
+  /** Recommended basic and complementary bibliography from Section 8 */
+  bibliography?: BibliographyItem[];
+  /** Program-wide overview metadata (used by Aula Tutor) */
+  programOverview?: ProgramOverview;
   /** Grading breakdown & assessment weights */
   grading?: GradingItem[];
   /** Recurring link shared by both M11 and M12 (if any) */

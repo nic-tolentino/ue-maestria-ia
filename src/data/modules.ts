@@ -127,11 +127,63 @@ export const MODULES: ModuleInfo[] = [
     color: "slate",
     category: "general",
     semester: "general",
+    ects: 60,
     canvasUrl: "https://campus.europaeducationgroup.es/courses/182658",
     descriptionEs:
       "Información general del Máster, calendario académico, normativa, avisos de coordinación y tutoría.",
     descriptionEn:
       "General Master's program info, academic calendar, guidelines, coordination announcements, and tutoring.",
+    programOverview: {
+      coDirectors: "Víctor Yeste & Idir Ouhab",
+      welcomeEs:
+        "El Máster Universitario en Inteligencia Artificial (60 ECTS · curso 2026–27) recorre el campo de la IA de principio a fin: desde los fundamentos del análisis de datos hasta la construcción de sistemas avanzados aplicados a problemas reales, cerrando con un Trabajo Fin de Máster aplicado o de investigación.",
+      welcomeEn:
+        "The Master's in Artificial Intelligence (60 ECTS · 2026–27) covers AI end to end — from data analysis fundamentals to building production-grade intelligent systems, culminating in an applied or research Master's Thesis (TFM).",
+      tools: [
+        "Python",
+        "Pandas",
+        "Scikit-learn",
+        "TensorFlow",
+        "Keras",
+        "SQL",
+        "NoSQL",
+      ],
+      methodologyEs:
+        "Aprendizaje basado en proyectos con casos reales. Además del stack técnico, se trabaja transversalmente la ética, la gobernanza y la seguridad para desarrollar IA de forma responsable.",
+      methodologyEn:
+        "Hands-on project-based learning on real-world cases. Alongside the technical stack, AI ethics, governance, and safety are integrated throughout the program.",
+      beyondClassroom: [
+        {
+          titleEs: "Masterclasses con profesionales",
+          titleEn: "Industry Masterclasses",
+          detailEs:
+            "Sesiones con especialistas que aplican IA en salud, industria, finanzas y consultoría.",
+          detailEn:
+            "Sessions with practitioners applying AI across healthcare, industry, finance, and consulting.",
+        },
+        {
+          titleEs: "Forum Europeo de IA (Encuentros NOW)",
+          titleEn: "European AI Forum (Encuentros NOW)",
+          detailEs:
+            "Participación en el evento anual celebrado cada noviembre en Alicante.",
+          detailEn:
+            "Participation in the annual AI forum held every November in Alicante.",
+        },
+        {
+          titleEs: "Certificaciones AWS y Azure",
+          titleEn: "AWS & Azure Certifications",
+          detailEs:
+            "Preparación integrada los martes para AWS AI Practitioner (AIF-C01) y Azure AI Fundamentals (AI-901).",
+          detailEn:
+            "Built-in Tuesday prep tracks for AWS AI Practitioner (AIF-C01) and Azure AI Fundamentals (AI-901).",
+        },
+      ],
+      supportEmail: "orientacioneducativa.uev@universidadeuropea.es",
+      supportNoteEs:
+        "La Unidad de Orientación Educativa y Diversidad (ODI) ofrece acompañamiento académico, planes personalizados, ajustes metodológicos para necesidades específicas y orientación vocacional.",
+      supportNoteEn:
+        "The Educational Guidance & Diversity Unit (ODI) provides academic mentoring, personalized study plans, non-significant curricular accommodations, and career guidance.",
+    },
   },
 
   // ===================== 1º SEMESTRE (Official UE Valencia Study Order) =====================
@@ -145,14 +197,91 @@ export const MODULES: ModuleInfo[] = [
     color: "indigo",
     category: "core",
     semester: 1,
+    ects: 6,
+    workloadHours: 150,
     canvasUrl: "https://campus.europaeducationgroup.es/courses/173859",
+    guidePdfUrl: "/guides/introduccion-data-science-ia.pdf",
+    guideRef: "6496b3ee",
     descriptionEs:
-      "1º Semestre · Módulo 1 (finalizado el 19 nov 2026). Fundamentos del análisis de datos e Inteligencia Artificial.",
+      "1º Semestre · Módulo 1 (finalizado el 19 nov 2026). Marco conceptual e historia de la IA, razonamiento automático, preparación de datos, estructuras Big Data y programación en la nube.",
     descriptionEn:
-      "1st Semester · Module 1 (completed Nov 19, 2026). Fundamentals of Data Science and Artificial Intelligence.",
+      "1st Semester · Module 1 (completed Nov 19, 2026). AI conceptual framework & history, automated reasoning, data preparation, Big Data indexing, and cloud data science programming.",
     professors: {
+      M11: "Miguel Ángel Torres",
       M12: "Sonia Montagud Gregori",
     },
+    topics: [
+      {
+        es: "Marco conceptual y evolución histórica de la inteligencia artificial",
+        en: "Conceptual framework and historical evolution of artificial intelligence",
+      },
+      {
+        es: "Resolución de problemas, razonamiento automático y planificación",
+        en: "Problem solving, automated reasoning, and planning",
+      },
+      {
+        es: "Representación estructurada del conocimiento y razonamiento con incertidumbre",
+        en: "Structured knowledge representation and reasoning under uncertainty",
+      },
+      {
+        es: "Fundamentos del análisis de datos y técnicas de limpieza y preparación",
+        en: "Data analysis fundamentals, cleaning, and preparation techniques",
+      },
+      {
+        es: "Estructuras avanzadas y técnicas de indexación para Big Data",
+        en: "Advanced data structures and indexing techniques for Big Data",
+      },
+      {
+        es: "Programación orientada a ciencia de datos y entornos en la nube",
+        en: "Data science programming and cloud computing environments",
+      },
+    ],
+    passRuleEs:
+      "Calificación final ponderada ≥ 5,0/10 en convocatoria ordinaria o extraordinaria. Si no se supera, debe cursarse de nuevo en su totalidad sin conservar notas parciales.",
+    passRuleEn:
+      "Weighted final grade ≥ 5.0/10 in ordinary or extraordinary sitting. If not passed in either sitting, the full module must be retaken (partial grades do not carry over).",
+    bibliography: [
+      {
+        kind: "basic",
+        citation:
+          "Russell, S., & Norvig, P. (2021). Artificial Intelligence: A Modern Approach (4th ed.). Pearson.",
+      },
+      {
+        kind: "basic",
+        citation:
+          "VanderPlas, J. (2023). Python Data Science Handbook: Essential Tools for Working with Data (2nd ed.). O'Reilly Media.",
+      },
+      {
+        kind: "basic",
+        citation:
+          "McKinney, W. (2022). Python for Data Analysis: Data Wrangling with pandas, NumPy, and Jupyter (3rd ed.). O'Reilly Media.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Leskovec, J., Rajaraman, A., & Ullman, J. D. (2020). Mining of Massive Datasets (3rd ed.). Cambridge University Press.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Kleppmann, M., & Riccomini, C. (2026). Designing Data-Intensive Applications (2nd ed.). O'Reilly Media.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Koller, D., & Friedman, N. (2009). Probabilistic Graphical Models: Principles and Techniques. MIT Press.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Ghallab, M., Nau, D., & Traverso, P. (2016). Automated Planning and Acting. Cambridge University Press.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Provost, F., & Fawcett, T. (2013). Data Science for Business. O'Reilly Media.",
+      },
+    ],
     grading: [
       {
         id: "ids-u1",
@@ -227,14 +356,116 @@ export const MODULES: ModuleInfo[] = [
     color: "emerald",
     category: "core",
     semester: 1,
+    ects: 6,
+    workloadHours: 150,
     canvasUrl: "https://campus.europaeducationgroup.es/courses/173855",
+    guidePdfUrl: "/guides/machine-learning.pdf",
+    guideRef: "9cfbf36a",
     descriptionEs:
-      "1º Semestre · Módulo 2 (23 nov – 14 dic 2026). Aprendizaje supervisado, no supervisado y por refuerzo.",
+      "1º Semestre · Módulo 2 (23 nov – 14 dic 2026). Algoritmos y herramientas para aprendizaje supervisado, no supervisado y por refuerzo, detección de patrones, evaluación y optimización de modelos.",
     descriptionEn:
-      "1st Semester · Module 2 (Nov 23 – Dec 14, 2026). Supervised, unsupervised, and reinforcement learning.",
+      "1st Semester · Module 2 (Nov 23 – Dec 14, 2026). Supervised, unsupervised, and reinforcement learning algorithms, pattern detection, model evaluation, tuning, and optimization.",
     professors: {
+      M11: "Jorge López Fresco",
       M12: "Álvaro López López",
     },
+    topics: [
+      {
+        es: "Principios y técnicas del aprendizaje supervisado con datos etiquetados",
+        en: "Supervised learning principles and techniques with labeled data",
+      },
+      {
+        es: "Métodos de aprendizaje no supervisado para la detección de patrones",
+        en: "Unsupervised learning methods for pattern detection",
+      },
+      {
+        es: "Fundamentos del aprendizaje reforzado basado en recompensas y castigos",
+        en: "Reinforcement learning fundamentals based on rewards and penalties",
+      },
+      {
+        es: "Algoritmos y herramientas para el entrenamiento de modelos predictivos",
+        en: "Algorithms and tools for training predictive models",
+      },
+      {
+        es: "Aplicaciones prácticas del aprendizaje automático en distintos dominios",
+        en: "Practical machine learning applications across domains",
+      },
+      {
+        es: "Evaluación, ajuste y optimización de modelos de machine learning",
+        en: "Evaluation, tuning, and optimization of machine learning models",
+      },
+    ],
+    passRuleEs:
+      "Calificación final ponderada ≥ 5,0/10 en convocatoria ordinaria o extraordinaria. Si no se supera, debe cursarse de nuevo en su totalidad sin conservar notas parciales.",
+    passRuleEn:
+      "Weighted final grade ≥ 5.0/10 in ordinary or extraordinary sitting. If not passed in either sitting, the full module must be retaken (partial grades do not carry over).",
+    bibliography: [
+      {
+        kind: "basic",
+        citation:
+          "Géron, A. (2023). Aprende machine learning con Scikit-Learn, Keras y TensorFlow (3.ª ed.). Anaya Multimedia.",
+      },
+      {
+        kind: "basic",
+        citation:
+          "Raschka, S., Liu, Y., & Mirjalili, V. (2023). Machine Learning con PyTorch y Scikit-Learn. Marcombo.",
+      },
+      {
+        kind: "basic",
+        citation:
+          "Sutton, R. S., & Barto, A. G. (2018). Reinforcement Learning: An Introduction. MIT Press.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Russell, S. J., & Norvig, P. (2004). Inteligencia artificial: Un enfoque moderno (2.ª ed.). Pearson Educación.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Hutter, F., Kotthoff, L., & Vanschoren, J. (eds.) (2019). Automated Machine Learning: Methods, Systems, Challenges. Springer.",
+      },
+    ],
+    grading: [
+      {
+        id: "ml-case",
+        unitLabelEs: "Caso / problema",
+        unitLabelEn: "Case / problem",
+        titleEs: "Resolución de caso práctico / problema (evaluación continua)",
+        titleEn: "Applied case / problem assignment (continuous assessment)",
+        weightPercent: 20,
+        type: "task",
+      },
+      {
+        id: "ml-project",
+        unitLabelEs: "Proyecto",
+        unitLabelEn: "Project",
+        titleEs: "Investigaciones y proyectos",
+        titleEn: "Research & project work",
+        weightPercent: 10,
+        type: "task",
+      },
+      {
+        id: "ml-lab",
+        unitLabelEs: "Laboratorio",
+        unitLabelEn: "Lab / Workshop",
+        titleEs: "Cuaderno de prácticas de laboratorio / taller",
+        titleEn: "Lab / workshop practice notebook",
+        weightPercent: 10,
+        type: "task",
+      },
+      {
+        id: "ml-final",
+        unitLabelEs: "Final",
+        unitLabelEn: "Final",
+        titleEs: "Pruebas de evaluación virtuales (examen final)",
+        titleEn: "Virtual final assessment exam",
+        weightPercent: 60,
+        type: "exam",
+        dueDateLabelEs: "10–11 abr 2027 (Pruebas 1º Semestre)",
+        dueDateLabelEn: "Apr 10–11, 2027 (1st Semester Exams)",
+      },
+    ],
     streamUrls: {
       M12: "https://teams.microsoft.com/meet/3113043422135988?p=7RimwpH2Y9tKfvSvX2",
     },

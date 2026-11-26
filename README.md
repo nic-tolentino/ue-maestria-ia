@@ -80,7 +80,8 @@ Open [http://localhost:3000](http://localhost:3000) (or [http://localhost:3000/a
 
 All schedule and course metadata lives in clean TypeScript data files under `src/data/`:
 
-- [`src/data/modules.ts`](src/data/modules.ts) — Modules in chronological study order, Canvas portal URLs, professors (`M11` / `M12`), recurring Teams URLs, and grading rubrics (`grading`).
+- [`src/data/modules.ts`](src/data/modules.ts) — Modules in chronological study order, Canvas portal URLs, official Teaching Guide PDF links (`guidePdfUrl`), ECTS, syllabus topics, bibliography, professors (`M11` / `M12`), recurring Teams URLs, and grading rubrics (`grading`).
+- `public/guides/` — Official UE Teaching Guide PDFs served statically at `/guides/<filename>.pdf` (linked from each unit in the Units hub).
 - [`src/data/sessions.ts`](src/data/sessions.ts) — Class dates/times, session titles, per-session Teams links, and single or multi-part recording URLs.
 - [`src/data/assignments.ts`](src/data/assignments.ts) — Assignment and quiz due dates (linked automatically to the Hero strip, Calendar views, `.ics` reminders, and Units grading table).
 - [`src/data/milestones.ts`](src/data/milestones.ts) — Semester exam windows and TFM defense dates.

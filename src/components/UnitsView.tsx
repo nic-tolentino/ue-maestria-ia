@@ -6,17 +6,24 @@ import {
   BookOpen,
   Calendar,
   CheckCircle2,
+  ChevronDown,
   ClipboardList,
   Clock,
+  Code2,
+  Compass,
   ExternalLink,
   FileText,
   GraduationCap,
+  Library,
   Link2Off,
   Lock,
+  Mail,
   MessageSquare,
   PlayCircle,
   RotateCcw,
+  Sparkles,
   User,
+  Users,
 } from "lucide-react";
 import { ASSIGNMENTS } from "@/data/assignments";
 import { getModuleShortName, MODULE_COLORS, MODULES } from "@/data/modules";
@@ -264,6 +271,14 @@ export function UnitsView({
                           {hasGrades && (
                             <Award className="h-3.5 w-3.5 text-emerald-600" />
                           )}
+                          {mod.guidePdfUrl && (
+                            <span
+                              className="rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-700"
+                              title={t.openTeachingGuide}
+                            >
+                              PDF
+                            </span>
+                          )}
                           {mod.canvasUrl && (
                             <span
                               className="rounded-md bg-red-50 px-1.5 py-0.5 text-[10px] font-semibold text-red-700"
@@ -321,6 +336,14 @@ export function UnitsView({
                     {t.tfmTrackLabel}
                   </span>
                 )}
+                {selectedModule.ects && (
+                  <span className="rounded-full border border-slate-200 bg-white px-2.5 py-0.5 text-xs font-semibold text-slate-700">
+                    {selectedModule.ects} ECTS
+                    {selectedModule.workloadHours
+                      ? ` · ${selectedModule.workloadHours}h`
+                      : ""}
+                  </span>
+                )}
               </div>
 
               <h2 className="mt-2.5 text-lg font-bold leading-snug text-slate-900 sm:text-xl">
@@ -357,7 +380,7 @@ export function UnitsView({
                 )}
             </div>
 
-            {/* Quick Action Links: Canvas + Recurring Teams */}
+            {/* Quick Action Links: Canvas + Teaching Guide PDF + Recurring Teams */}
             <div className="flex shrink-0 flex-col gap-2 sm:items-end">
               {selectedModule.canvasUrl && (
                 <a
@@ -369,6 +392,19 @@ export function UnitsView({
                   <GraduationCap className="h-4 w-4" />
                   <span>{t.openCanvas}</span>
                   <ExternalLink className="h-3.5 w-3.5" />
+                </a>
+              )}
+
+              {selectedModule.guidePdfUrl && (
+                <a
+                  href={selectedModule.guidePdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-800 shadow-xs transition hover:bg-slate-50"
+                >
+                  <FileText className="h-4 w-4 text-rose-600" />
+                  <span>{t.openTeachingGuide}</span>
+                  <ExternalLink className="h-3.5 w-3.5 text-slate-400" />
                 </a>
               )}
 
@@ -403,13 +439,221 @@ export function UnitsView({
         </section>
 
         {selectedModule.category === "general" ? (
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs">
-            <p className="text-sm leading-relaxed text-slate-600">
-              {t.unitGeneralInfoNote}
-            </p>
-          </section>
+          selectedModule.programOverview ? (
+            <div className="space-y-5">
+              {/* Program Welcome & Co-Directors */}
+              <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="h-5 w-5 text-indigo-600" />
+                    <h3 className="text-sm font-bold text-slate-900 sm:text-base">
+                      {t.programWelcomeTitle}
+                    </h3>
+                  </div>
+                  <span className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-700">
+                    <Users className="h-3.5 w-3.5 text-slate-400" />
+                    <span>
+                      {t.programCoDirectorsLabel}:{" "}
+                      <strong className="font-semibold text-slate-900">
+                        {selectedModule.programOverview.coDirectors}
+                      </strong>
+                    </span>
+                  </span>
+                </div>
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  {locale === "en"
+                    ? selectedModule.programOverview.welcomeEn
+                    : selectedModule.programOverview.welcomeEs}
+                </p>
+              </section>
+
+              {/* How we work & Tools */}
+              <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs">
+                <div className="flex items-center gap-2">
+                  <Code2 className="h-5 w-5 text-slate-700" />
+                  <h3 className="text-sm font-bold text-slate-900 sm:text-base">
+                    {t.programMethodologyTitle}
+                  </h3>
+                </div>
+                <p className="mt-2.5 text-sm leading-relaxed text-slate-600">
+                  {locale === "en"
+                    ? selectedModule.programOverview.methodologyEn
+                    : selectedModule.programOverview.methodologyEs}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {selectedModule.programOverview.tools.map((tool) => (
+                    <span
+                      key={tool}
+                      className="rounded-full border border-indigo-200 bg-indigo-50 px-2.5 py-0.5 text-xs font-semibold text-indigo-800"
+                    >
+                      {tool}
+                    </span>
+                  ))}
+                </div>
+              </section>
+
+              {/* Beyond the Classroom */}
+              <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs">
+                <div className="flex items-center gap-2">
+                  <Compass className="h-5 w-5 text-slate-700" />
+                  <h3 className="text-sm font-bold text-slate-900 sm:text-base">
+                    {t.programBeyondTitle}
+                  </h3>
+                </div>
+                <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                  {selectedModule.programOverview.beyondClassroom.map(
+                    (item) => (
+                      <div
+                        key={item.titleEs}
+                        className="rounded-xl border border-slate-200 bg-slate-50/70 p-3.5"
+                      >
+                        <p className="text-xs font-bold text-slate-900">
+                          {locale === "en" ? item.titleEn : item.titleEs}
+                        </p>
+                        <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                          {locale === "en" ? item.detailEn : item.detailEs}
+                        </p>
+                      </div>
+                    ),
+                  )}
+                </div>
+              </section>
+
+              {/* Student Support (ODI) */}
+              <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <Mail className="h-4 w-4 text-slate-700" />
+                    <h3 className="text-sm font-bold text-slate-900">
+                      {t.programSupportTitle}
+                    </h3>
+                  </div>
+                  <a
+                    href={`mailto:${selectedModule.programOverview.supportEmail}`}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-indigo-700 transition hover:bg-indigo-50"
+                  >
+                    <span>{selectedModule.programOverview.supportEmail}</span>
+                  </a>
+                </div>
+                <p className="mt-2 text-xs leading-relaxed text-slate-600">
+                  {locale === "en"
+                    ? selectedModule.programOverview.supportNoteEn
+                    : selectedModule.programOverview.supportNoteEs}
+                </p>
+              </section>
+            </div>
+          ) : (
+            <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs">
+              <p className="text-sm leading-relaxed text-slate-600">
+                {t.unitGeneralInfoNote}
+              </p>
+            </section>
+          )
         ) : (
           <>
+            {/* Official Syllabus, Passing Rule & Bibliography (from Teaching Guide PDF) */}
+            {(selectedModule.topics?.length ||
+              selectedModule.bibliography?.length ||
+              selectedModule.passRuleEs) && (
+              <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <BookOpen className="h-5 w-5 text-slate-700" />
+                    <h3 className="text-sm font-bold text-slate-900 sm:text-base">
+                      {t.syllabusAndGuideTitle}
+                    </h3>
+                  </div>
+                  {selectedModule.guidePdfUrl && (
+                    <a
+                      href={selectedModule.guidePdfUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-100"
+                    >
+                      <FileText className="h-3.5 w-3.5 text-rose-600" />
+                      <span>{t.openTeachingGuide}</span>
+                      <ExternalLink className="h-3 w-3 text-slate-400" />
+                    </a>
+                  )}
+                </div>
+
+                {selectedModule.topics && selectedModule.topics.length > 0 && (
+                  <div className="mt-3.5">
+                    <h4 className="text-[11px] font-bold uppercase tracking-wide text-slate-400">
+                      {t.keyTopicsTitle}
+                    </h4>
+                    <ul className="mt-2 grid grid-cols-1 gap-x-4 gap-y-1.5 sm:grid-cols-2">
+                      {selectedModule.topics.map((topic, idx) => (
+                        <li
+                          key={idx}
+                          className="flex items-start gap-2 text-xs leading-relaxed text-slate-700"
+                        >
+                          <span
+                            className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full ${colors.dot}`}
+                          />
+                          <span>{locale === "en" ? topic.en : topic.es}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {(selectedModule.passRuleEs || selectedModule.passRuleEn) && (
+                  <div className="mt-3.5 rounded-xl border border-slate-200/80 bg-slate-50/70 px-3.5 py-2.5 text-xs leading-relaxed text-slate-600">
+                    <span className="font-bold text-slate-800">
+                      {t.passRuleLabel}:{" "}
+                    </span>
+                    {locale === "en"
+                      ? selectedModule.passRuleEn || selectedModule.passRuleEs
+                      : selectedModule.passRuleEs || selectedModule.passRuleEn}
+                  </div>
+                )}
+
+                {selectedModule.bibliography &&
+                  selectedModule.bibliography.length > 0 && (
+                    <details className="group mt-3.5 rounded-xl border border-slate-200">
+                      <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-3.5 py-2.5 text-xs font-bold text-slate-800 select-none hover:bg-slate-50">
+                        <span className="inline-flex items-center gap-2">
+                          <Library className="h-4 w-4 text-slate-500" />
+                          <span>
+                            {t.bibliographyTitle} (
+                            {selectedModule.bibliography.length})
+                          </span>
+                        </span>
+                        <ChevronDown className="h-4 w-4 text-slate-400 transition-transform group-open:rotate-180" />
+                      </summary>
+                      <div className="space-y-3 border-t border-slate-100 px-3.5 py-3 text-xs text-slate-600">
+                        {(["basic", "complementary"] as const).map((kind) => {
+                          const items = selectedModule.bibliography!.filter(
+                            (b) => b.kind === kind,
+                          );
+                          if (items.length === 0) return null;
+                          return (
+                            <div key={kind}>
+                              <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
+                                {kind === "basic"
+                                  ? t.bibliographyBasic
+                                  : t.bibliographyComplementary}
+                              </p>
+                              <ul className="mt-1 space-y-1">
+                                {items.map((book, idx) => (
+                                  <li
+                                    key={idx}
+                                    className="leading-relaxed text-slate-700"
+                                  >
+                                    • {book.citation}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </details>
+                  )}
+              </section>
+            )}
+
             {/* Grading & Personal Grade Tracker */}
             <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs">
               <div className="flex flex-wrap items-start justify-between gap-3">
