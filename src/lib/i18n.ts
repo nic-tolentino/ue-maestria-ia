@@ -2,8 +2,12 @@ import type { Locale, ReportReason } from "@/types/calendar";
 
 export const TRANSLATIONS = {
   es: {
-    appTitle: "Calendario · Máster en IA",
+    appTitle: "Máster en IA · Portal",
     appSubtitle: "Universidad Europea de Valencia · Online 2026–27 (M11 & M12)",
+    navCalendar: "Calendario",
+    navCourse: "Curso y Asignaturas",
+    navCourseShort: "Curso",
+    navCourseBadge: "Guías & Notas",
     streamLabel: "Grupo",
     streamAll: "Ambos",
     streamBothBadge: "M11 + M12",
@@ -32,6 +36,7 @@ export const TRANSLATIONS = {
     heroAllDone: "No quedan clases programadas",
     heroNoClassDesc: "Hoy no hay sesión programada en el calendario.",
     heroOpenDetails: "Ver clase y comentarios",
+    heroUnitGuideCta: "Asignatura y guía",
     heroJoinTeams: "Unirse a Teams",
     heroJoinStream: "Unirse",
     heroLinkPending: "Enlace pendiente",
@@ -202,8 +207,12 @@ export const TRANSLATIONS = {
     mockModeNotice: "Modo desarrollo (datos locales en .data/)",
   },
   en: {
-    appTitle: "Calendar · Master's in AI",
+    appTitle: "Master's in AI · Hub",
     appSubtitle: "Universidad Europea de Valencia · Online 2026–27 (M11 & M12)",
+    navCalendar: "Calendar",
+    navCourse: "Course & Units",
+    navCourseShort: "Course",
+    navCourseBadge: "Guides & Grades",
     streamLabel: "Group",
     streamAll: "Both",
     streamBothBadge: "M11 + M12",
@@ -232,6 +241,7 @@ export const TRANSLATIONS = {
     heroAllDone: "No upcoming classes scheduled",
     heroNoClassDesc: "There is no scheduled session on today's calendar.",
     heroOpenDetails: "Class details & comments",
+    heroUnitGuideCta: "Unit & guide",
     heroJoinTeams: "Join Teams",
     heroJoinStream: "Join",
     heroLinkPending: "Link pending",

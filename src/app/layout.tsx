@@ -8,23 +8,23 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Calendario · Máster en IA · Universidad Europea (M11 & M12)",
+  title: "Máster en IA · Portal · Universidad Europea (M11 & M12)",
   description:
-    "Calendario de clases online, enlaces de Microsoft Teams, grabaciones, asignaturas y seguimiento de notas para el Máster Universitario en Inteligencia Artificial de la Universidad Europea (M11 & M12).",
+    "Calendario de clases online, enlaces de Microsoft Teams, grabaciones, guías docentes, asignaturas y seguimiento de notas para el Máster Universitario en Inteligencia Artificial de la Universidad Europea (M11 & M12).",
   openGraph: {
-    title: "Calendario · Máster en IA · UE Valencia (M11 & M12)",
+    title: "Máster en IA · Portal · UE Valencia (M11 & M12)",
     description:
-      "Clases en directo, enlaces de Teams, grabaciones, portal Canvas y seguimiento de evaluación (2026–27).",
+      "Calendario en directo, enlaces de Teams, grabaciones, guías docentes PDF, enlaces a Canvas y seguimiento de notas (2026–27).",
     type: "website",
     locale: "es_ES",
     alternateLocale: ["en_US"],
-    siteName: "Calendario · Máster en IA (UE)",
+    siteName: "Máster en IA · Portal (UE)",
   },
   twitter: {
     card: "summary",
-    title: "Calendario · Máster en IA · UE Valencia (M11 & M12)",
+    title: "Máster en IA · Portal · UE Valencia (M11 & M12)",
     description:
-      "Clases en directo, enlaces de Teams, grabaciones, portal Canvas y seguimiento de evaluación (2026–27).",
+      "Calendario en directo, enlaces de Teams, grabaciones, guías docentes PDF, enlaces a Canvas y seguimiento de notas (2026–27).",
   },
 };
 

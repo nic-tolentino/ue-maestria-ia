@@ -56,6 +56,9 @@ export function CalendarApp({
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showSubscribe, setShowSubscribe] = useState(false);
   const [viewMode, setViewMode] = useState<CalendarViewMode>("week");
+  const [lastCalendarView, setLastCalendarView] = useState<
+    "week" | "month" | "agenda"
+  >("week");
   const [selectedUnitId, setSelectedUnitId] = useState<string | null>(null);
 
   // Admin moderation session (unlocked via /admin, kept in sessionStorage)
@@ -78,7 +81,7 @@ export function CalendarApp({
 
   const t = getTranslations(locale);
 
-  // Hydrate saved preferences (stream, locale, viewMode, admin session) + URL ?session= deep link
+  // Hydrate saved preferences (stream, locale, viewMode, admin session) + URL deep links
   useEffect(() => {
     try {
       const savedLocale = localStorage.getItem(LOCALE_STORAGE_KEY);
@@ -95,10 +98,12 @@ export function CalendarApp({
       if (
         savedView === "week" ||
         savedView === "month" ||
-        savedView === "agenda" ||
-        savedView === "units"
+        savedView === "agenda"
       ) {
         setViewMode(savedView);
+        setLastCalendarView(savedView);
+      } else if (savedView === "units") {
+        setViewMode("units");
       }
 
       const savedAdmin = sessionStorage.getItem(ADMIN_SESSION_KEY);
@@ -120,11 +125,20 @@ export function CalendarApp({
       // ignore storage issues
     }
 
-    // Check URL ?session=<id> (e.g., tapped from a phone notification!)
+    // Check URL deep links: ?session=<id>, ?view=course, ?unit=<moduleId>
     const params = new URLSearchParams(window.location.search);
     const deepSession = params.get("session");
     if (deepSession && SESSIONS.some((s) => s.id === deepSession)) {
       setSelectedSessionId(deepSession);
+    }
+
+    const deepView = params.get("view");
+    const deepUnit = params.get("unit");
+    if (deepView === "course" || deepView === "units" || deepUnit) {
+      setViewMode("units");
+      if (deepUnit) {
+        setSelectedUnitId(deepUnit);
+      }
     }
   }, []);
 
@@ -158,8 +172,19 @@ export function CalendarApp({
 
   const handleSelectViewMode = useCallback((mode: CalendarViewMode) => {
     setViewMode(mode);
+    if (mode !== "units") {
+      setLastCalendarView(mode);
+    }
     try {
       localStorage.setItem(VIEW_STORAGE_KEY, mode);
+      const url = new URL(window.location.href);
+      if (mode === "units") {
+        url.searchParams.set("view", "course");
+      } else {
+        url.searchParams.delete("view");
+        url.searchParams.delete("unit");
+      }
+      window.history.replaceState({}, "", url.toString());
     } catch {
       // ignore
     }
@@ -199,13 +224,30 @@ export function CalendarApp({
     }
   }, []);
 
+  const handleSelectUnit = useCallback((moduleId: string) => {
+    setSelectedUnitId(moduleId);
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.set("view", "course");
+      url.searchParams.set("unit", moduleId);
+      window.history.replaceState({}, "", url.toString());
+    } catch {
+      // ignore
+    }
+  }, []);
+
   const handleOpenUnit = useCallback(
     (moduleId: string) => {
       handleCloseSession();
-      setSelectedUnitId(moduleId);
-      handleSelectViewMode("units");
+      handleSelectUnit(moduleId);
+      setViewMode("units");
+      try {
+        localStorage.setItem(VIEW_STORAGE_KEY, "units");
+      } catch {
+        // ignore
+      }
     },
-    [handleCloseSession, handleSelectViewMode],
+    [handleCloseSession, handleSelectUnit],
   );
 
   const handleJumpToday = useCallback(() => {
@@ -252,14 +294,20 @@ export function CalendarApp({
     [selectedSessionId],
   );
 
+  const activeSection = viewMode === "units" ? "course" : "calendar";
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       {/* Top Sticky Header */}
-      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
+      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur-md">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 pt-3 pb-2.5 sm:px-6">
           {/* Brand */}
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-red-600 text-white shadow-xs">
+          <button
+            type="button"
+            onClick={() => handleSelectViewMode(lastCalendarView)}
+            className="flex items-center gap-2.5 text-left transition hover:opacity-85"
+          >
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-red-600 text-white shadow-xs">
               <GraduationCap className="h-5 w-5" />
             </div>
             <div>
@@ -270,7 +318,7 @@ export function CalendarApp({
                 {t.appSubtitle}
               </p>
             </div>
-          </div>
+          </button>
 
           {/* Right Controls: Stream Switcher + ICS + Language Toggle */}
           <div className="flex flex-wrap items-center gap-2">
@@ -323,117 +371,168 @@ export function CalendarApp({
             </button>
           </div>
         </div>
+
+        {/* Top-Level Section Navigation: Calendar vs Course & Units */}
+        <nav
+          aria-label="Primary"
+          className="mx-auto flex max-w-6xl items-center gap-1 border-t border-slate-100 px-4 sm:gap-2 sm:px-6"
+        >
+          <button
+            type="button"
+            onClick={() => handleSelectViewMode(lastCalendarView)}
+            className={`relative inline-flex items-center gap-2 px-3 py-2.5 text-xs font-semibold transition sm:text-sm ${
+              activeSection === "calendar"
+                ? "text-slate-950"
+                : "text-slate-500 hover:text-slate-800"
+            }`}
+          >
+            <CalendarDays
+              className={`h-4 w-4 ${
+                activeSection === "calendar"
+                  ? "text-red-600"
+                  : "text-slate-400"
+              }`}
+            />
+            <span>{t.navCalendar}</span>
+            {activeSection === "calendar" && (
+              <span className="absolute right-0 bottom-0 left-0 h-0.5 rounded-t-full bg-red-600" />
+            )}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleSelectViewMode("units")}
+            className={`relative inline-flex items-center gap-2 px-3 py-2.5 text-xs font-semibold transition sm:text-sm ${
+              activeSection === "course"
+                ? "text-slate-950"
+                : "text-slate-500 hover:text-slate-800"
+            }`}
+          >
+            <BookOpen
+              className={`h-4 w-4 ${
+                activeSection === "course" ? "text-red-600" : "text-slate-400"
+              }`}
+            />
+            <span className="sm:hidden">{t.navCourseShort}</span>
+            <span className="hidden sm:inline">{t.navCourse}</span>
+            <span
+              className={`rounded-full px-2 py-0.5 text-[10px] font-bold transition ${
+                activeSection === "course"
+                  ? "bg-red-50 text-red-700"
+                  : "bg-slate-100 text-slate-600"
+              }`}
+            >
+              {t.navCourseBadge}
+            </span>
+            {activeSection === "course" && (
+              <span className="absolute right-0 bottom-0 left-0 h-0.5 rounded-t-full bg-red-600" />
+            )}
+          </button>
+        </nav>
       </header>
 
       {/* Main Container */}
       <main className="mx-auto max-w-6xl space-y-5 px-4 py-5 sm:px-6 sm:py-6">
-        {/* Today / Up Next Hero */}
-        <NextClassHero
-          sessions={SESSIONS}
-          commentsBySession={commentsBySession}
-          streamFilter={streamFilter}
-          locale={locale}
-          onOpenSession={handleOpenSession}
-        />
+        {activeSection === "calendar" ? (
+          <>
+            {/* Today / Up Next Hero */}
+            <NextClassHero
+              sessions={SESSIONS}
+              commentsBySession={commentsBySession}
+              streamFilter={streamFilter}
+              locale={locale}
+              onOpenSession={handleOpenSession}
+              onOpenUnit={handleOpenUnit}
+            />
 
-        {/* View Mode Tabs */}
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="inline-flex rounded-xl border border-slate-200 bg-white p-1 shadow-xs">
-            <button
-              type="button"
-              onClick={() => handleSelectViewMode("week")}
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-semibold transition sm:text-sm ${
-                viewMode === "week"
-                  ? "bg-slate-900 text-white"
-                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-              }`}
-            >
-              <CalendarDays className="h-4 w-4" />
-              {t.viewWeek}
-            </button>
-            <button
-              type="button"
-              onClick={() => handleSelectViewMode("month")}
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-semibold transition sm:text-sm ${
-                viewMode === "month"
-                  ? "bg-slate-900 text-white"
-                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-              }`}
-            >
-              <CalendarIcon className="h-4 w-4" />
-              {t.viewMonth}
-            </button>
-            <button
-              type="button"
-              onClick={() => handleSelectViewMode("agenda")}
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-semibold transition sm:text-sm ${
-                viewMode === "agenda"
-                  ? "bg-slate-900 text-white"
-                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-              }`}
-            >
-              <ListTodo className="h-4 w-4" />
-              {t.viewAgenda}
-            </button>
-            <button
-              type="button"
-              onClick={() => handleSelectViewMode("units")}
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-semibold transition sm:text-sm ${
-                viewMode === "units"
-                  ? "bg-slate-900 text-white"
-                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-              }`}
-            >
-              <BookOpen className="h-4 w-4" />
-              {t.viewUnits}
-            </button>
-          </div>
+            {/* Calendar Sub-View Switcher (Week / Month / Agenda) */}
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="inline-flex rounded-xl border border-slate-200 bg-white p-1 shadow-xs">
+                <button
+                  type="button"
+                  onClick={() => handleSelectViewMode("week")}
+                  className={`inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-semibold transition sm:text-sm ${
+                    viewMode === "week"
+                      ? "bg-slate-900 text-white"
+                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                  }`}
+                >
+                  <CalendarDays className="h-4 w-4" />
+                  {t.viewWeek}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleSelectViewMode("month")}
+                  className={`inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-semibold transition sm:text-sm ${
+                    viewMode === "month"
+                      ? "bg-slate-900 text-white"
+                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                  }`}
+                >
+                  <CalendarIcon className="h-4 w-4" />
+                  {t.viewMonth}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleSelectViewMode("agenda")}
+                  className={`inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-semibold transition sm:text-sm ${
+                    viewMode === "agenda"
+                      ? "bg-slate-900 text-white"
+                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                  }`}
+                >
+                  <ListTodo className="h-4 w-4" />
+                  {t.viewAgenda}
+                </button>
+              </div>
 
-          <p className="text-xs text-slate-500">
-            {SESSIONS.length} {t.sessionsCount} · Nov 2026 – Jun 2027 (
-            {t.heroMadridTime})
-          </p>
-        </div>
+              <p className="text-xs text-slate-500">
+                {SESSIONS.length} {t.sessionsCount} · Nov 2026 – Jun 2027 (
+                {t.heroMadridTime})
+              </p>
+            </div>
 
-        {/* Active View */}
-        {viewMode === "month" && (
-          <MonthView
-            year={monthYear.year}
-            monthIndex={monthYear.monthIndex}
-            sessions={SESSIONS}
-            commentsBySession={commentsBySession}
-            streamFilter={streamFilter}
-            locale={locale}
-            onChangeMonth={(y, m) => setMonthYear({ year: y, monthIndex: m })}
-            onJumpToday={handleJumpToday}
-            onOpenSession={handleOpenSession}
-          />
-        )}
+            {/* Active Calendar View */}
+            {viewMode === "month" && (
+              <MonthView
+                year={monthYear.year}
+                monthIndex={monthYear.monthIndex}
+                sessions={SESSIONS}
+                commentsBySession={commentsBySession}
+                streamFilter={streamFilter}
+                locale={locale}
+                onChangeMonth={(y, m) =>
+                  setMonthYear({ year: y, monthIndex: m })
+                }
+                onJumpToday={handleJumpToday}
+                onOpenSession={handleOpenSession}
+              />
+            )}
 
-        {viewMode === "week" && (
-          <WeekView
-            weekStartMonday={weekStartMonday}
-            sessions={SESSIONS}
-            commentsBySession={commentsBySession}
-            streamFilter={streamFilter}
-            locale={locale}
-            onChangeWeek={setWeekStartMonday}
-            onJumpToday={handleJumpToday}
-            onOpenSession={handleOpenSession}
-          />
-        )}
+            {viewMode === "week" && (
+              <WeekView
+                weekStartMonday={weekStartMonday}
+                sessions={SESSIONS}
+                commentsBySession={commentsBySession}
+                streamFilter={streamFilter}
+                locale={locale}
+                onChangeWeek={setWeekStartMonday}
+                onJumpToday={handleJumpToday}
+                onOpenSession={handleOpenSession}
+              />
+            )}
 
-        {viewMode === "agenda" && (
-          <AgendaView
-            sessions={SESSIONS}
-            commentsBySession={commentsBySession}
-            streamFilter={streamFilter}
-            locale={locale}
-            onOpenSession={handleOpenSession}
-          />
-        )}
-
-        {viewMode === "units" && (
+            {viewMode === "agenda" && (
+              <AgendaView
+                sessions={SESSIONS}
+                commentsBySession={commentsBySession}
+                streamFilter={streamFilter}
+                locale={locale}
+                onOpenSession={handleOpenSession}
+              />
+            )}
+          </>
+        ) : (
           <UnitsView
             sessions={SESSIONS}
             commentsBySession={commentsBySession}
@@ -441,6 +540,7 @@ export function CalendarApp({
             locale={locale}
             initialModuleId={selectedUnitId}
             onOpenSession={handleOpenSession}
+            onSelectModule={handleSelectUnit}
           />
         )}
       </main>

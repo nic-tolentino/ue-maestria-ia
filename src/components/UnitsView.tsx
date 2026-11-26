@@ -56,6 +56,7 @@ interface UnitsViewProps {
   locale: Locale;
   initialModuleId?: string | null;
   onOpenSession: (session: ClassSession) => void;
+  onSelectModule?: (moduleId: string) => void;
 }
 
 export function UnitsView({
@@ -65,6 +66,7 @@ export function UnitsView({
   locale,
   initialModuleId,
   onOpenSession,
+  onSelectModule,
 }: UnitsViewProps) {
   const t = getTranslations(locale);
   const unitModules = useMemo(
@@ -244,7 +246,10 @@ export function UnitsView({
                       <button
                         key={mod.id}
                         type="button"
-                        onClick={() => setSelectedId(mod.id)}
+                        onClick={() => {
+                          setSelectedId(mod.id);
+                          onSelectModule?.(mod.id);
+                        }}
                         className={`flex w-full items-center justify-between gap-2 rounded-xl border px-3 py-2 text-left transition ${
                           isActive
                             ? `${modColors.bg} ${modColors.border} ring-1 ring-slate-300`

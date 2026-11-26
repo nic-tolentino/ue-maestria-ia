@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  BookOpen,
   Calendar,
   ClipboardList,
   Clock,
@@ -37,6 +38,7 @@ interface NextClassHeroProps {
   streamFilter: StreamFilter;
   locale: Locale;
   onOpenSession: (session: ClassSession) => void;
+  onOpenUnit?: (moduleId: string) => void;
 }
 
 export function NextClassHero({
@@ -45,6 +47,7 @@ export function NextClassHero({
   streamFilter,
   locale,
   onOpenSession,
+  onOpenUnit,
 }: NextClassHeroProps) {
   const t = getTranslations(locale);
   const { todaySession, nextSession, live } = getTodayAndNextSession(sessions);
@@ -127,12 +130,24 @@ export function NextClassHero({
               </>
             )}
 
-            <span
-              className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-semibold ${colors.badge}`}
-            >
-              <span className={`h-2 w-2 rounded-full ${colors.dot}`} />
-              {mod.code}
-            </span>
+            {onOpenUnit && mod.id !== "tbd" ? (
+              <button
+                type="button"
+                onClick={() => onOpenUnit(mod.id)}
+                className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-semibold transition hover:opacity-80 ${colors.badge}`}
+                title={t.heroUnitGuideCta}
+              >
+                <span className={`h-2 w-2 rounded-full ${colors.dot}`} />
+                {mod.code}
+              </button>
+            ) : (
+              <span
+                className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-semibold ${colors.badge}`}
+              >
+                <span className={`h-2 w-2 rounded-full ${colors.dot}`} />
+                {mod.code}
+              </span>
+            )}
           </div>
 
           <h2 className="mt-2.5 text-lg font-bold text-slate-900 sm:text-xl">
@@ -220,19 +235,32 @@ export function NextClassHero({
             )}
           </div>
 
-          <button
-            type="button"
-            onClick={() => onOpenSession(featured)}
-            className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50"
-          >
-            <MessageSquare className="h-3.5 w-3.5 text-slate-500" />
-            <span>{t.heroOpenDetails}</span>
-            {visibleComments.length > 0 && (
-              <span className="ml-0.5 rounded-full bg-slate-900 px-1.5 py-0.2 text-[11px] font-bold text-white">
-                {visibleComments.length}
-              </span>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={() => onOpenSession(featured)}
+              className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50"
+            >
+              <MessageSquare className="h-3.5 w-3.5 text-slate-500" />
+              <span>{t.heroOpenDetails}</span>
+              {visibleComments.length > 0 && (
+                <span className="ml-0.5 rounded-full bg-slate-900 px-1.5 py-0.2 text-[11px] font-bold text-white">
+                  {visibleComments.length}
+                </span>
+              )}
+            </button>
+
+            {onOpenUnit && mod.id !== "tbd" && (
+              <button
+                type="button"
+                onClick={() => onOpenUnit(mod.id)}
+                className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-100"
+              >
+                <BookOpen className="h-3.5 w-3.5 text-slate-500" />
+                <span>{t.heroUnitGuideCta}</span>
+              </button>
             )}
-          </button>
+          </div>
         </div>
       </div>
 
@@ -245,11 +273,8 @@ export function NextClassHero({
           </span>
           {upcomingDeadlines.map((a) => {
             const aMod = getModule(a.moduleId);
-            return (
-              <span
-                key={a.id}
-                className="inline-flex flex-wrap items-center gap-1.5 rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs text-amber-950"
-              >
+            const content = (
+              <>
                 <span className="font-bold">{aMod.code}</span>
                 <span className="font-medium">
                   {locale === "en" && a.titleEn ? a.titleEn : a.titleEs}
@@ -264,6 +289,23 @@ export function NextClassHero({
                   {a.dueTime}
                 </span>
                 <StreamBadge stream={a.stream} locale={locale} />
+              </>
+            );
+            return onOpenUnit ? (
+              <button
+                key={a.id}
+                type="button"
+                onClick={() => onOpenUnit(a.moduleId)}
+                className="inline-flex flex-wrap items-center gap-1.5 rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-1 text-left text-xs text-amber-950 transition hover:border-amber-300 hover:bg-amber-100/80"
+              >
+                {content}
+              </button>
+            ) : (
+              <span
+                key={a.id}
+                className="inline-flex flex-wrap items-center gap-1.5 rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs text-amber-950"
+              >
+                {content}
               </span>
             );
           })}

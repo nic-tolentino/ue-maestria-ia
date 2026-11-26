@@ -1,12 +1,12 @@
-# Calendario · Máster Universitario en Inteligencia Artificial (UE Valencia · 2026–27)
+# Máster en IA · Portal / Hub (UE Valencia · 2026–27)
 
-Bilingual (**ES / EN**) live class calendar, Microsoft Teams link hub, video recordings archive, units directory, and private grade tracker for the online Master's in AI at Universidad Europea de Valencia (**M11 & M12** streams).
+Bilingual (**ES / EN**) student hub with live class calendar, Microsoft Teams link directory, video recordings archive, official Teaching Guide PDFs, syllabus & bibliography, and private grade tracker for the online Master's in AI at Universidad Europea de Valencia (**M11 & M12** streams).
 
 ## Features
 
-- **Weekly (default), Monthly, Agenda & Units views** — remembers your last selected view and preferred stream (`M11`, `M12`, or `Both`).
-- **Today / Up Next Hero** — live status, Madrid time + automatic local timezone conversion, professor name, recurring Teams join button, and upcoming assignment deadline strip.
-- **Units (`Asignaturas`) Hub** — modules in chronological study order (Aula Tutor, 1st Semester, Cloud Certifications AWS/Azure, 2nd Semester, TFM), direct Canvas links, grading weights, and a **private personal grade tracker** stored only in `localStorage`.
+- **Top-level Calendar + Course & Units navigation** — Calendar (`Week` default, `Month`, `Agenda`) and **Course & Units** (`Guides & Grades`) right in the sticky header, with shareable deep links (`/?session=...` and `/?view=course&unit=...`).
+- **Today / Up Next Hero** — live status, Madrid time + automatic local timezone conversion, professor names (M11 & M12), recurring Teams join button, direct jump to the active unit's guide, and clickable upcoming assignment deadlines.
+- **Course & Units (`Curso y Asignaturas`) Hub** — all modules in chronological study order (Aula Tutor, 1st Semester, Cloud Certifications AWS/Azure, 2nd Semester, TFM), direct Canvas links, official Teaching Guide PDFs (`/guides/*.pdf`), bilingual syllabus topics, bibliography, and a **private personal grade tracker** stored only in `localStorage`.
 - **Low-friction Student Comments** — name-only posting, M11 / M12 / Both stream tags, automatic Teams link detection, upvotes, and reporting (auto-hides after 3 reports).
 - **Instant Phone Notifications (`ntfy.sh`)** — normal push on new comments, **urgent** push on reported comments with tap-to-open buttons straight to `/admin` or the exact class session.
 - **Dedicated Admin Dashboard (`/admin`)** — protected by `ADMIN_SECRET`, with a **Reports Triage Queue** (reason, timestamp, reporter details, target comment) and a **Chronological All-Comments Feed** across every session, with search, filters, 1-tap Pin/Unpin, Clear reports, and 2-tap Delete.
