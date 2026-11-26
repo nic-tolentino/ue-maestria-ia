@@ -85,6 +85,7 @@ All schedule and course metadata lives in clean TypeScript data files under `src
 - [`src/data/sessions.ts`](src/data/sessions.ts) — Class dates/times, session titles, per-session Teams links, and single or multi-part recording URLs.
 - [`src/data/assignments.ts`](src/data/assignments.ts) — Assignment and quiz due dates (linked automatically to the Hero strip, Calendar views, `.ics` reminders, and Units grading table).
 - [`src/data/milestones.ts`](src/data/milestones.ts) — Semester exam windows and TFM defense dates.
+- [`src/data/people.ts`](src/data/people.ts) — Program leadership (co-directors & Online Tutor), elected M11/M12 class representatives, and student support contacts (faculty cards are auto-derived from `modules.ts`).
 
 ## Scripts
 

@@ -134,7 +134,7 @@ export const MODULES: ModuleInfo[] = [
     descriptionEn:
       "General Master's program info, academic calendar, guidelines, coordination announcements, and tutoring.",
     programOverview: {
-      coDirectors: "Víctor Yeste & Idir Ouhab",
+      coDirectors: "Víctor Yeste Moreno & Idir Ouhab",
       welcomeEs:
         "El Máster Universitario en Inteligencia Artificial (60 ECTS · curso 2026–27) recorre el campo de la IA de principio a fin: desde los fundamentos del análisis de datos hasta la construcción de sistemas avanzados aplicados a problemas reales, cerrando con un Trabajo Fin de Máster aplicado o de investigación.",
       welcomeEn:
@@ -1396,8 +1396,8 @@ export const MODULES: ModuleInfo[] = [
     descriptionEn:
       "2nd Semester · Elective (R&D / PhD track vs. Company Internship). Experimental design in AI, data analysis, scientific writing, reproducibility, and research ethics.",
     professors: {
-      M11: "Víctor Yeste",
-      M12: "Víctor Yeste",
+      M11: "Víctor Yeste Moreno",
+      M12: "Víctor Yeste Moreno",
     },
     topics: [
       {

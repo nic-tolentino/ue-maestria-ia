@@ -2,7 +2,7 @@ export type Stream = "M11" | "M12";
 export type StreamFilter = "ALL" | Stream;
 export type CommentStream = Stream | "BOTH";
 export type Locale = "es" | "en";
-export type CalendarViewMode = "month" | "week" | "agenda" | "units";
+export type CalendarViewMode = "month" | "week" | "agenda" | "units" | "people";
 
 export type SessionStatus = "scheduled" | "cancelled" | "moved" | "tbd";
 

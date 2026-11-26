@@ -13,6 +13,7 @@ import {
   ListTodo,
   Lock,
   ShieldCheck,
+  Users,
 } from "lucide-react";
 import { SESSIONS } from "@/data/sessions";
 import type { StorageMode } from "@/lib/comments-store";
@@ -28,6 +29,7 @@ import type {
 import { AgendaView } from "./AgendaView";
 import { MonthView } from "./MonthView";
 import { NextClassHero } from "./NextClassHero";
+import { PeopleView } from "./PeopleView";
 import { SessionDrawer } from "./SessionDrawer";
 import { StreamOnboardingModal } from "./StreamOnboardingModal";
 import { SubscribeModal } from "./SubscribeModal";
@@ -102,8 +104,8 @@ export function CalendarApp({
       ) {
         setViewMode(savedView);
         setLastCalendarView(savedView);
-      } else if (savedView === "units") {
-        setViewMode("units");
+      } else if (savedView === "units" || savedView === "people") {
+        setViewMode(savedView);
       }
 
       const savedAdmin = sessionStorage.getItem(ADMIN_SESSION_KEY);
@@ -125,7 +127,7 @@ export function CalendarApp({
       // ignore storage issues
     }
 
-    // Check URL deep links: ?session=<id>, ?view=course, ?unit=<moduleId>
+    // Check URL deep links: ?session=<id>, ?view=course|people, ?unit=<moduleId>
     const params = new URLSearchParams(window.location.search);
     const deepSession = params.get("session");
     if (deepSession && SESSIONS.some((s) => s.id === deepSession)) {
@@ -134,7 +136,9 @@ export function CalendarApp({
 
     const deepView = params.get("view");
     const deepUnit = params.get("unit");
-    if (deepView === "course" || deepView === "units" || deepUnit) {
+    if (deepView === "people") {
+      setViewMode("people");
+    } else if (deepView === "course" || deepView === "units" || deepUnit) {
       setViewMode("units");
       if (deepUnit) {
         setSelectedUnitId(deepUnit);
@@ -172,7 +176,7 @@ export function CalendarApp({
 
   const handleSelectViewMode = useCallback((mode: CalendarViewMode) => {
     setViewMode(mode);
-    if (mode !== "units") {
+    if (mode !== "units" && mode !== "people") {
       setLastCalendarView(mode);
     }
     try {
@@ -180,6 +184,9 @@ export function CalendarApp({
       const url = new URL(window.location.href);
       if (mode === "units") {
         url.searchParams.set("view", "course");
+      } else if (mode === "people") {
+        url.searchParams.set("view", "people");
+        url.searchParams.delete("unit");
       } else {
         url.searchParams.delete("view");
         url.searchParams.delete("unit");
@@ -294,7 +301,12 @@ export function CalendarApp({
     [selectedSessionId],
   );
 
-  const activeSection = viewMode === "units" ? "course" : "calendar";
+  const activeSection =
+    viewMode === "units"
+      ? "course"
+      : viewMode === "people"
+        ? "people"
+        : "calendar";
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
@@ -415,16 +427,27 @@ export function CalendarApp({
             />
             <span className="sm:hidden">{t.navCourseShort}</span>
             <span className="hidden sm:inline">{t.navCourse}</span>
-            <span
-              className={`rounded-full px-2 py-0.5 text-[10px] font-bold transition ${
-                activeSection === "course"
-                  ? "bg-red-50 text-red-700"
-                  : "bg-slate-100 text-slate-600"
-              }`}
-            >
-              {t.navCourseBadge}
-            </span>
             {activeSection === "course" && (
+              <span className="absolute right-0 bottom-0 left-0 h-0.5 rounded-t-full bg-red-600" />
+            )}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleSelectViewMode("people")}
+            className={`relative inline-flex items-center gap-2 px-3 py-2.5 text-xs font-semibold transition sm:text-sm ${
+              activeSection === "people"
+                ? "text-slate-950"
+                : "text-slate-500 hover:text-slate-800"
+            }`}
+          >
+            <Users
+              className={`h-4 w-4 ${
+                activeSection === "people" ? "text-red-600" : "text-slate-400"
+              }`}
+            />
+            <span>{t.navPeople}</span>
+            {activeSection === "people" && (
               <span className="absolute right-0 bottom-0 left-0 h-0.5 rounded-t-full bg-red-600" />
             )}
           </button>
@@ -532,7 +555,7 @@ export function CalendarApp({
               />
             )}
           </>
-        ) : (
+        ) : activeSection === "course" ? (
           <UnitsView
             sessions={SESSIONS}
             commentsBySession={commentsBySession}
@@ -541,6 +564,12 @@ export function CalendarApp({
             initialModuleId={selectedUnitId}
             onOpenSession={handleOpenSession}
             onSelectModule={handleSelectUnit}
+          />
+        ) : (
+          <PeopleView
+            streamFilter={streamFilter}
+            locale={locale}
+            onOpenUnit={handleOpenUnit}
           />
         )}
       </main>

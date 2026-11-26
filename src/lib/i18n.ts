@@ -7,7 +7,7 @@ export const TRANSLATIONS = {
     navCalendar: "Calendario",
     navCourse: "Curso y Asignaturas",
     navCourseShort: "Curso",
-    navCourseBadge: "Guías & Notas",
+    navPeople: "Personas",
     streamLabel: "Grupo",
     streamAll: "Ambos",
     streamBothBadge: "M11 + M12",
@@ -139,6 +139,21 @@ export const TRANSLATIONS = {
     programSupportTitle: "Orientación Educativa y Diversidad (ODI · Valencia)",
     programGuideBadge: "Guía PDF",
 
+    // People directory
+    peopleTitle: "Equipo del Máster y Delegados",
+    peopleSubtitle:
+      "Dirección académica, tutoría online, representantes estudiantiles y profesorado por asignatura y grupo.",
+    peopleSearchPlaceholder: "Buscar por nombre, rol o asignatura...",
+    peopleFilterNotice: "Filtrado por {stream} · Ver todos",
+    peopleShowingAll: "Mostrando M11 y M12",
+    peopleNoMatches: "No se encontraron personas con ese filtro.",
+    peopleLeadershipTitle: "Dirección académica y Tutoría Online",
+    peopleRepsTitle: "Delegados de clase",
+    peopleRepsSubtitle: "Representantes estudiantiles elegidos por grupo",
+    peopleFacultyTitle: "Profesorado por asignatura",
+    peopleFacultyHint: "Pulsa una asignatura para ver su guía y evaluación",
+    peopleSupportTitle: "Orientación y apoyo al estudiante (ODI)",
+
     // Comments
     commentsTitle: "Comentarios y actualizaciones",
     commentsSubtitle:
@@ -212,7 +227,7 @@ export const TRANSLATIONS = {
     navCalendar: "Calendar",
     navCourse: "Course & Units",
     navCourseShort: "Course",
-    navCourseBadge: "Guides & Grades",
+    navPeople: "People",
     streamLabel: "Group",
     streamAll: "Both",
     streamBothBadge: "M11 + M12",
@@ -343,6 +358,21 @@ export const TRANSLATIONS = {
     programBeyondTitle: "Beyond the Classroom",
     programSupportTitle: "Educational Guidance & Diversity (ODI · Valencia)",
     programGuideBadge: "PDF Guide",
+
+    // People directory
+    peopleTitle: "Program Staff, Faculty & Class Reps",
+    peopleSubtitle:
+      "Academic co-directors, online tutoring, elected student representatives, and professors by unit and group.",
+    peopleSearchPlaceholder: "Search by name, role, or unit...",
+    peopleFilterNotice: "Filtered to {stream} · Show all",
+    peopleShowingAll: "Showing M11 & M12",
+    peopleNoMatches: "No people matched that filter.",
+    peopleLeadershipTitle: "Program Leadership & Online Tutoring",
+    peopleRepsTitle: "Class Representatives (Delegados)",
+    peopleRepsSubtitle: "Elected student representatives per stream",
+    peopleFacultyTitle: "Faculty & Professors by Unit",
+    peopleFacultyHint: "Click any unit to open its syllabus, guide & grades",
+    peopleSupportTitle: "Educational Guidance & Support (ODI)",
 
     // Comments
     commentsTitle: "Comments & Live Updates",
