@@ -6,11 +6,16 @@ import {
   Calendar as CalendarIcon,
   CalendarDays,
   CalendarPlus,
+  Database,
   GraduationCap,
   Languages,
   ListTodo,
+  Lock,
+  ShieldCheck,
+  X,
 } from "lucide-react";
 import { SESSIONS } from "@/data/sessions";
+import type { StorageMode } from "@/lib/comments-store";
 import { getTranslations } from "@/lib/i18n";
 import { getMadridDateStr, getWeekStartMonday } from "@/lib/schedule";
 import type {
@@ -32,12 +37,17 @@ import { WeekView } from "./WeekView";
 const STREAM_STORAGE_KEY = "ue-ai-stream-pref";
 const LOCALE_STORAGE_KEY = "ue-ai-locale";
 const VIEW_STORAGE_KEY = "ue-ai-view-mode";
+const ADMIN_SESSION_KEY = "ue-ai-admin-secret";
 
 interface CalendarAppProps {
   initialComments: SessionComment[];
+  storageMode?: StorageMode;
 }
 
-export function CalendarApp({ initialComments }: CalendarAppProps) {
+export function CalendarApp({
+  initialComments,
+  storageMode = "mock",
+}: CalendarAppProps) {
   const todayStr = getMadridDateStr();
   const [todayY, todayM] = todayStr.split("-").map(Number);
 
@@ -47,6 +57,13 @@ export function CalendarApp({ initialComments }: CalendarAppProps) {
   const [showSubscribe, setShowSubscribe] = useState(false);
   const [viewMode, setViewMode] = useState<CalendarViewMode>("week");
   const [selectedUnitId, setSelectedUnitId] = useState<string | null>(null);
+
+  // Admin moderation state (stored only in sessionStorage for organizer convenience)
+  const [adminSecret, setAdminSecret] = useState<string | null>(null);
+  const [showAdminModal, setShowAdminModal] = useState(false);
+  const [adminInput, setAdminInput] = useState("");
+  const [adminError, setAdminError] = useState<string | null>(null);
+  const [adminVerifying, setAdminVerifying] = useState(false);
 
   // Calendar navigation state
   const [monthYear, setMonthYear] = useState({
@@ -65,7 +82,7 @@ export function CalendarApp({ initialComments }: CalendarAppProps) {
 
   const t = getTranslations(locale);
 
-  // Hydrate saved preferences (stream, locale, viewMode) + URL ?session= deep link
+  // Hydrate saved preferences (stream, locale, viewMode, admin session) + URL ?session= deep link
   useEffect(() => {
     try {
       const savedLocale = localStorage.getItem(LOCALE_STORAGE_KEY);
@@ -86,6 +103,11 @@ export function CalendarApp({ initialComments }: CalendarAppProps) {
         savedView === "units"
       ) {
         setViewMode(savedView);
+      }
+
+      const savedAdmin = sessionStorage.getItem(ADMIN_SESSION_KEY);
+      if (savedAdmin) {
+        setAdminSecret(savedAdmin);
       }
 
       const savedStream = localStorage.getItem(STREAM_STORAGE_KEY);
@@ -205,6 +227,56 @@ export function CalendarApp({ initialComments }: CalendarAppProps) {
     setComments((prev) =>
       prev.map((c) => (c.id === updated.id ? updated : c)),
     );
+  }, []);
+
+  const handleCommentDeleted = useCallback((commentId: string) => {
+    setComments((prev) => prev.filter((c) => c.id !== commentId));
+  }, []);
+
+  const handleUnlockAdmin = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      setAdminError(null);
+      const candidate = adminInput.trim();
+      if (!candidate) return;
+      setAdminVerifying(true);
+      try {
+        const res = await fetch("/api/admin/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ secret: candidate }),
+        });
+        if (!res.ok) {
+          const data = (await res.json().catch(() => ({}))) as {
+            error?: string;
+          };
+          setAdminError(data.error || t.adminInvalidSecret);
+          return;
+        }
+        setAdminSecret(candidate);
+        setAdminInput("");
+        setShowAdminModal(false);
+        try {
+          sessionStorage.setItem(ADMIN_SESSION_KEY, candidate);
+        } catch {
+          // ignore
+        }
+      } catch {
+        setAdminError("Network error");
+      } finally {
+        setAdminVerifying(false);
+      }
+    },
+    [adminInput, t.adminInvalidSecret],
+  );
+
+  const handleLockAdmin = useCallback(() => {
+    setAdminSecret(null);
+    try {
+      sessionStorage.removeItem(ADMIN_SESSION_KEY);
+    } catch {
+      // ignore
+    }
   }, []);
 
   const commentsBySession = useMemo(() => {
@@ -414,6 +486,50 @@ export function CalendarApp({ initialComments }: CalendarAppProps) {
         )}
       </main>
 
+      {/* Subtle Footer: Storage Mode (in dev mock) + Discreet Organizer Admin Toggle */}
+      <footer className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 pb-8 pt-2 text-[11px] text-slate-400 sm:px-6">
+        <div className="flex flex-wrap items-center gap-2">
+          <span>{t.appSubtitle}</span>
+          {storageMode === "mock" && (
+            <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 font-medium text-amber-800">
+              <Database className="h-3 w-3" />
+              {t.mockModeNotice}
+            </span>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2">
+          {adminSecret ? (
+            <>
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 font-semibold text-emerald-700">
+                <ShieldCheck className="h-3 w-3" />
+                {t.adminActive}
+              </span>
+              <button
+                type="button"
+                onClick={handleLockAdmin}
+                className="rounded-md px-1.5 py-0.5 font-medium text-slate-500 underline hover:text-slate-800"
+              >
+                {t.adminLockBtn}
+              </button>
+            </>
+          ) : (
+            <button
+              type="button"
+              onClick={() => {
+                setAdminError(null);
+                setShowAdminModal(true);
+              }}
+              className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+              title={t.adminUnlockTitle}
+            >
+              <Lock className="h-3 w-3" />
+              <span>{t.adminMode}</span>
+            </button>
+          )}
+        </div>
+      </footer>
+
       {/* Modals & Drawer */}
       {showOnboarding && (
         <StreamOnboardingModal locale={locale} onSelect={handleSelectStream} />
@@ -427,16 +543,78 @@ export function CalendarApp({ initialComments }: CalendarAppProps) {
         />
       )}
 
+      {showAdminModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-xs"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-5 shadow-xl">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="h-4 w-4 text-slate-700" />
+                <h3 className="text-sm font-bold text-slate-900">
+                  {t.adminUnlockTitle}
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowAdminModal(false)}
+                className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                aria-label={t.close}
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+            <p className="mt-1.5 text-xs text-slate-500">{t.adminUnlockHint}</p>
+
+            <form onSubmit={handleUnlockAdmin} className="mt-4 space-y-3">
+              <input
+                type="password"
+                value={adminInput}
+                onChange={(e) => setAdminInput(e.target.value)}
+                placeholder={t.adminSecretPlaceholder}
+                autoFocus
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-900 focus:border-slate-400 focus:bg-white focus:outline-none"
+              />
+              {adminError && (
+                <p className="text-xs font-medium text-rose-600">
+                  {adminError}
+                </p>
+              )}
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowAdminModal(false)}
+                  className="rounded-xl px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-100"
+                >
+                  {t.cancel}
+                </button>
+                <button
+                  type="submit"
+                  disabled={adminVerifying}
+                  className="rounded-xl bg-slate-900 px-4 py-2 text-xs font-semibold text-white transition hover:bg-slate-800 disabled:opacity-50"
+                >
+                  {t.adminUnlockBtn}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {selectedSession && (
         <SessionDrawer
           session={selectedSession}
           comments={commentsBySession[selectedSession.id] ?? []}
           streamFilter={streamFilter}
           locale={locale}
+          adminSecret={adminSecret}
           onClose={handleCloseSession}
           onOpenUnit={handleOpenUnit}
           onCommentCreated={handleCommentCreated}
           onCommentUpdated={handleCommentUpdated}
+          onCommentDeleted={handleCommentDeleted}
         />
       )}
     </div>

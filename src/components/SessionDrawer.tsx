@@ -35,10 +35,12 @@ interface SessionDrawerProps {
   comments: SessionComment[];
   streamFilter: StreamFilter;
   locale: Locale;
+  adminSecret?: string | null;
   onClose: () => void;
   onOpenUnit?: (moduleId: string) => void;
   onCommentCreated: (comment: SessionComment) => void;
   onCommentUpdated: (comment: SessionComment) => void;
+  onCommentDeleted?: (commentId: string) => void;
 }
 
 export function SessionDrawer({
@@ -46,10 +48,12 @@ export function SessionDrawer({
   comments,
   streamFilter,
   locale,
+  adminSecret,
   onClose,
   onOpenUnit,
   onCommentCreated,
   onCommentUpdated,
+  onCommentDeleted,
 }: SessionDrawerProps) {
   const t = getTranslations(locale);
   const mod = getModule(session.moduleId);
@@ -283,8 +287,10 @@ export function SessionDrawer({
             comments={comments}
             preferredStream={streamFilter}
             locale={locale}
+            adminSecret={adminSecret}
             onCommentCreated={onCommentCreated}
             onCommentUpdated={onCommentUpdated}
+            onCommentDeleted={onCommentDeleted}
           />
         </div>
       </div>

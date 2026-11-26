@@ -168,6 +168,24 @@ export const TRANSLATIONS = {
       outdated: "Información desactualizada",
       other: "Otro motivo",
     } as Record<ReportReason, string>,
+
+    // Admin moderation & storage
+    adminMode: "Admin",
+    adminActive: "Modo admin activo",
+    adminUnlockTitle: "Acceso de moderación",
+    adminUnlockHint:
+      "Introduce tu ADMIN_SECRET para fijar, restaurar o borrar comentarios.",
+    adminSecretPlaceholder: "Clave de administrador...",
+    adminUnlockBtn: "Desbloquear",
+    adminLockBtn: "Bloquear",
+    adminInvalidSecret: "Clave incorrecta.",
+    adminPin: "Fijar",
+    adminUnpin: "Desfijar",
+    adminDelete: "Borrar",
+    adminConfirmDelete: "¿Confirmar?",
+    adminClearReports: "Limpiar reportes",
+    adminHiddenBanner: "Oculto a alumnos ({n} reportes)",
+    mockModeNotice: "Modo desarrollo (datos locales en .data/)",
   },
   en: {
     appTitle: "Calendar · Master's in AI",
@@ -336,6 +354,24 @@ export const TRANSLATIONS = {
       outdated: "Outdated info",
       other: "Other",
     } as Record<ReportReason, string>,
+
+    // Admin moderation & storage
+    adminMode: "Admin",
+    adminActive: "Admin mode active",
+    adminUnlockTitle: "Moderation access",
+    adminUnlockHint:
+      "Enter your ADMIN_SECRET to pin, restore, or delete comments.",
+    adminSecretPlaceholder: "Admin key...",
+    adminUnlockBtn: "Unlock",
+    adminLockBtn: "Lock",
+    adminInvalidSecret: "Invalid key.",
+    adminPin: "Pin",
+    adminUnpin: "Unpin",
+    adminDelete: "Delete",
+    adminConfirmDelete: "Confirm?",
+    adminClearReports: "Clear reports",
+    adminHiddenBanner: "Hidden from students ({n} reports)",
+    mockModeNotice: "Dev mock mode (local .data/ store)",
   },
 } as const;
 

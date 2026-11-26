@@ -48,6 +48,7 @@ async function dispatchNotification(payload: NotifyPayload): Promise<void> {
         method: "POST",
         headers,
         body: payload.message,
+        signal: AbortSignal.timeout(4000),
       }).catch((err) => console.error("[notify:ntfy]", err)),
     );
   }
@@ -66,6 +67,7 @@ async function dispatchNotification(payload: NotifyPayload): Promise<void> {
           text,
           parse_mode: "Markdown",
         }),
+        signal: AbortSignal.timeout(4000),
       }).catch((err) => console.error("[notify:telegram]", err)),
     );
   }
@@ -82,6 +84,7 @@ async function dispatchNotification(payload: NotifyPayload): Promise<void> {
           priority: payload.priority,
           clickUrl: payload.clickUrl,
         }),
+        signal: AbortSignal.timeout(4000),
       }).catch((err) => console.error("[notify:webhook]", err)),
     );
   }
@@ -96,8 +99,18 @@ function escapeTelegram(s: string): string {
 }
 
 function buildSessionUrl(sessionId: string): string | undefined {
-  const base = process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/+$/, "");
-  return base ? `${base}/?session=${encodeURIComponent(sessionId)}` : undefined;
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  const vercelProd = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+  const vercelPreview = process.env.VERCEL_URL?.trim();
+
+  const rawBase = explicit || vercelProd || vercelPreview;
+  if (!rawBase) return undefined;
+
+  const normalized = /^https?:\/\//i.test(rawBase)
+    ? rawBase.replace(/\/+$/, "")
+    : `https://${rawBase.replace(/\/+$/, "")}`;
+
+  return `${normalized}/?session=${encodeURIComponent(sessionId)}`;
 }
 
 export async function notifyNewComment(comment: SessionComment): Promise<void> {

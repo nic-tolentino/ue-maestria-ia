@@ -8,7 +8,9 @@ import {
   Link2,
   Pin,
   Send,
+  ShieldCheck,
   ThumbsUp,
+  Trash2,
 } from "lucide-react";
 import { getTranslations } from "@/lib/i18n";
 import { formatRelativeTime } from "@/lib/schedule";
@@ -30,8 +32,10 @@ interface CommentThreadProps {
   comments: SessionComment[];
   preferredStream: StreamFilter;
   locale: Locale;
+  adminSecret?: string | null;
   onCommentCreated: (comment: SessionComment) => void;
   onCommentUpdated: (comment: SessionComment) => void;
+  onCommentDeleted?: (commentId: string) => void;
 }
 
 export function CommentThread({
@@ -39,10 +43,13 @@ export function CommentThread({
   comments,
   preferredStream,
   locale,
+  adminSecret,
   onCommentCreated,
   onCommentUpdated,
+  onCommentDeleted,
 }: CommentThreadProps) {
   const t = getTranslations(locale);
+  const isAdmin = Boolean(adminSecret);
 
   const defaultPostStream: CommentStream =
     preferredStream === "ALL" ? "BOTH" : preferredStream;
@@ -70,6 +77,10 @@ export function CommentThread({
   const [reportReason, setReportReason] = useState<ReportReason>("wrong_link");
   const [reportDetails, setReportDetails] = useState("");
   const [reportToast, setReportToast] = useState<string | null>(null);
+
+  // Admin moderation state
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [adminBusyId, setAdminBusyId] = useState<string | null>(null);
 
   useEffect(() => {
     try {
@@ -214,6 +225,65 @@ export function CommentThread({
     }
   }
 
+  async function handleAdminPin(comment: SessionComment) {
+    if (!adminSecret) return;
+    setAdminBusyId(comment.id);
+    try {
+      const res = await fetch(`/api/comments/${encodeURIComponent(comment.id)}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-secret": adminSecret,
+        },
+        body: JSON.stringify({ isPinned: !comment.isPinned }),
+      });
+      if (res.ok) {
+        const data = (await res.json()) as { comment: SessionComment };
+        onCommentUpdated(data.comment);
+      }
+    } finally {
+      setAdminBusyId(null);
+    }
+  }
+
+  async function handleAdminClearReports(comment: SessionComment) {
+    if (!adminSecret) return;
+    setAdminBusyId(comment.id);
+    try {
+      const res = await fetch(`/api/comments/${encodeURIComponent(comment.id)}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-secret": adminSecret,
+        },
+        body: JSON.stringify({ clearReports: true }),
+      });
+      if (res.ok) {
+        const data = (await res.json()) as { comment: SessionComment };
+        onCommentUpdated(data.comment);
+      }
+    } finally {
+      setAdminBusyId(null);
+    }
+  }
+
+  async function handleAdminDelete(commentId: string) {
+    if (!adminSecret) return;
+    setAdminBusyId(commentId);
+    try {
+      const res = await fetch(`/api/comments/${encodeURIComponent(commentId)}`, {
+        method: "DELETE",
+        headers: { "x-admin-secret": adminSecret },
+      });
+      if (res.ok) {
+        setConfirmDeleteId(null);
+        onCommentDeleted?.(commentId);
+      }
+    } finally {
+      setAdminBusyId(null);
+    }
+  }
+
   const filtered = comments.filter((c) => {
     if (streamTab === "ALL") return true;
     return c.stream === streamTab || c.stream === "BOTH";
@@ -307,9 +377,12 @@ export function CommentThread({
         ) : (
           sorted.map((comment) => {
             const isHidden =
-              comment.reportCount >= 3 && !revealedIds.has(comment.id);
+              !isAdmin &&
+              comment.reportCount >= 3 &&
+              !revealedIds.has(comment.id);
             const hasUpvoted = upvotedIds.has(comment.id);
             const hasReported = reportedIds.has(comment.id);
+            const isBusy = adminBusyId === comment.id;
 
             if (isHidden) {
               return (
@@ -337,11 +410,27 @@ export function CommentThread({
               <div
                 key={comment.id}
                 className={`rounded-xl border p-3.5 transition ${
-                  comment.isPinned
-                    ? "border-amber-200 bg-amber-50/40"
-                    : "border-slate-200 bg-white"
+                  isAdmin && comment.reportCount >= 3
+                    ? "border-rose-300 bg-rose-50/40"
+                    : comment.isPinned
+                      ? "border-amber-200 bg-amber-50/40"
+                      : "border-slate-200 bg-white"
                 }`}
               >
+                {isAdmin && comment.reportCount > 0 && (
+                  <div className="mb-2 flex items-center justify-between gap-2 rounded-lg bg-rose-100/80 px-2.5 py-1 text-[11px] font-semibold text-rose-800">
+                    <span className="inline-flex items-center gap-1">
+                      <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
+                      {comment.reportCount >= 3
+                        ? t.adminHiddenBanner.replace(
+                            "{n}",
+                            String(comment.reportCount),
+                          )
+                        : `${t.reportedBadge} (${comment.reportCount}x)`}
+                    </span>
+                  </div>
+                )}
+
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex flex-wrap items-center gap-1.5">
                     <span className="text-xs font-bold text-slate-900">
@@ -382,8 +471,8 @@ export function CommentThread({
                   </a>
                 )}
 
-                {/* Actions: Upvote + Report */}
-                <div className="mt-2.5 flex items-center justify-between border-t border-slate-100 pt-2">
+                {/* Actions: Upvote + Report + Admin Moderation */}
+                <div className="mt-2.5 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-2">
                   <button
                     type="button"
                     onClick={() => handleToggleVote(comment)}
@@ -398,25 +487,81 @@ export function CommentThread({
                     <span className="hidden sm:inline">{t.upvoteLabel}</span>
                   </button>
 
-                  {hasReported ? (
-                    <span className="inline-flex items-center gap-1 text-[11px] font-medium text-amber-700">
-                      <Flag className="h-3 w-3" />
-                      {t.reportedBadge}
-                    </span>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setReportingId(
-                          reportingId === comment.id ? null : comment.id,
-                        )
-                      }
-                      className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium text-slate-400 transition hover:bg-rose-50 hover:text-rose-600"
-                    >
-                      <Flag className="h-3 w-3" />
-                      <span>{t.reportLabel}</span>
-                    </button>
-                  )}
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    {isAdmin && (
+                      <>
+                        <button
+                          type="button"
+                          disabled={isBusy}
+                          onClick={() => handleAdminPin(comment)}
+                          className={`inline-flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-semibold transition disabled:opacity-50 ${
+                            comment.isPinned
+                              ? "bg-amber-100 text-amber-800 hover:bg-amber-200"
+                              : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                          }`}
+                        >
+                          <Pin className="h-3 w-3" />
+                          <span>
+                            {comment.isPinned ? t.adminUnpin : t.adminPin}
+                          </span>
+                        </button>
+
+                        {comment.reportCount > 0 && (
+                          <button
+                            type="button"
+                            disabled={isBusy}
+                            onClick={() => handleAdminClearReports(comment)}
+                            className="inline-flex items-center gap-1 rounded-lg bg-emerald-50 px-2 py-1 text-[11px] font-semibold text-emerald-700 transition hover:bg-emerald-100 disabled:opacity-50"
+                          >
+                            <ShieldCheck className="h-3 w-3" />
+                            <span>{t.adminClearReports}</span>
+                          </button>
+                        )}
+
+                        {confirmDeleteId === comment.id ? (
+                          <button
+                            type="button"
+                            disabled={isBusy}
+                            onClick={() => handleAdminDelete(comment.id)}
+                            className="inline-flex items-center gap-1 rounded-lg bg-rose-600 px-2 py-1 text-[11px] font-semibold text-white transition hover:bg-rose-700 disabled:opacity-50"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                            <span>{t.adminConfirmDelete}</span>
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            disabled={isBusy}
+                            onClick={() => setConfirmDeleteId(comment.id)}
+                            className="inline-flex items-center gap-1 rounded-lg bg-rose-50 px-2 py-1 text-[11px] font-semibold text-rose-700 transition hover:bg-rose-100 disabled:opacity-50"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                            <span>{t.adminDelete}</span>
+                          </button>
+                        )}
+                      </>
+                    )}
+
+                    {hasReported ? (
+                      <span className="inline-flex items-center gap-1 text-[11px] font-medium text-amber-700">
+                        <Flag className="h-3 w-3" />
+                        {t.reportedBadge}
+                      </span>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setReportingId(
+                            reportingId === comment.id ? null : comment.id,
+                          )
+                        }
+                        className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium text-slate-400 transition hover:bg-rose-50 hover:text-rose-600"
+                      >
+                        <Flag className="h-3 w-3" />
+                        <span>{t.reportLabel}</span>
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 {/* Inline Report Form */}
