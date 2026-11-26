@@ -480,11 +480,130 @@ export const MODULES: ModuleInfo[] = [
     color: "violet",
     category: "core",
     semester: 1,
+    ects: 6,
+    workloadHours: 150,
     canvasUrl: "https://campus.europaeducationgroup.es/courses/173870",
+    guidePdfUrl: "/guides/redes-neuronales-deep-learning.pdf",
+    guideRef: "caefbc7c",
     descriptionEs:
-      "1º Semestre · Módulo 3. Redes neuronales profundas con TensorFlow y Keras.",
+      "1º Semestre · Módulo 3. Arquitecturas profundas, optimización, ajuste de hiperparámetros, regularización y aplicaciones en visión y lenguaje natural.",
     descriptionEn:
-      "1st Semester · Module 3. Deep neural networks with TensorFlow and Keras.",
+      "1st Semester · Module 3. Deep neural architectures, optimization, hyperparameter tuning, regularization, and applications in vision and NLP.",
+    professors: {
+      M11: "Alejandro Perdiguero O'Leary",
+    },
+    topics: [
+      {
+        es: "Representaciones complejas y arquitecturas de redes neuronales profundas",
+        en: "Complex representations and deep neural network architectures",
+      },
+      {
+        es: "Aplicaciones avanzadas como reconocimiento de imágenes y lenguaje natural",
+        en: "Advanced applications including image recognition and natural language processing",
+      },
+      {
+        es: "Técnicas de optimización y ajuste de hiperparámetros en modelos neuronales",
+        en: "Optimization techniques and hyperparameter tuning in neural models",
+      },
+      {
+        es: "Métodos de evaluación y mejora del rendimiento en deep learning",
+        en: "Performance evaluation and improvement methods in deep learning",
+      },
+      {
+        es: "Estrategias de regularización y reducción del sobreajuste",
+        en: "Regularization strategies and overfitting reduction",
+      },
+      {
+        es: "Estabilización del entrenamiento y mejora de la generalización del modelo",
+        en: "Training stabilization and improving model generalization",
+      },
+    ],
+    passRuleEs:
+      "Calificación final ponderada ≥ 5,0/10 en convocatoria ordinaria o extraordinaria. Si no se supera, debe cursarse de nuevo en su totalidad sin conservar notas parciales.",
+    passRuleEn:
+      "Weighted final grade ≥ 5.0/10 in ordinary or extraordinary sitting. If not passed in either sitting, the full module must be retaken (partial grades do not carry over).",
+    bibliography: [
+      {
+        kind: "basic",
+        citation:
+          "Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep Learning. MIT Press.",
+      },
+      {
+        kind: "basic",
+        citation:
+          "Prince, S. J. D. (2023). Understanding Deep Learning. MIT Press.",
+      },
+      {
+        kind: "basic",
+        citation:
+          "Chollet, F., & Watson, M. (2025). Deep Learning with Python (3rd ed.). Manning.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Bishop, C. M., & Bishop, H. (2024). Deep Learning: Foundations and Concepts. Springer.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "LeCun, Y., Bengio, Y., & Hinton, G. (2015). Deep learning. Nature, 521(7553), 436–444.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Srivastava, N., Hinton, G., Krizhevsky, A., Sutskever, I., & Salakhutdinov, R. (2014). Dropout: A simple way to prevent neural networks from overfitting. JMLR, 15, 1929–1958.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Ioffe, S., & Szegedy, C. (2015). Batch normalization: Accelerating deep network training by reducing internal covariate shift. ICML (PMLR 37, pp. 448–456).",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Kingma, D. P., & Ba, J. (2015). Adam: A method for stochastic optimization. ICLR 2015.",
+      },
+    ],
+    grading: [
+      {
+        id: "dl-case",
+        unitLabelEs: "Caso / problema",
+        unitLabelEn: "Case / problem",
+        titleEs: "Resolución de caso práctico / problema (evaluación continua)",
+        titleEn: "Applied case / problem assignment (continuous assessment)",
+        weightPercent: 20,
+        type: "task",
+      },
+      {
+        id: "dl-project",
+        unitLabelEs: "Proyecto",
+        unitLabelEn: "Project",
+        titleEs: "Investigaciones y proyectos",
+        titleEn: "Research & project work",
+        weightPercent: 10,
+        type: "task",
+      },
+      {
+        id: "dl-lab",
+        unitLabelEs: "Laboratorio",
+        unitLabelEn: "Lab / Workshop",
+        titleEs: "Cuaderno de prácticas de laboratorio / taller",
+        titleEn: "Lab / workshop practice notebook",
+        weightPercent: 10,
+        type: "task",
+      },
+      {
+        id: "dl-final",
+        unitLabelEs: "Final",
+        unitLabelEn: "Final",
+        titleEs: "Pruebas de evaluación virtuales (examen final)",
+        titleEn: "Virtual final assessment exam",
+        weightPercent: 60,
+        type: "exam",
+        dueDateLabelEs: "10–11 abr 2027 (Pruebas 1º Semestre)",
+        dueDateLabelEn: "Apr 10–11, 2027 (1st Semester Exams)",
+      },
+    ],
     streamUrls: {},
   },
   {
@@ -497,11 +616,141 @@ export const MODULES: ModuleInfo[] = [
     color: "fuchsia",
     category: "core",
     semester: 1,
+    ects: 6,
+    workloadHours: 150,
     canvasUrl: "https://campus.europaeducationgroup.es/courses/173861",
+    guidePdfUrl: "/guides/ia-generativa.pdf",
+    guideRef: "8c0c08c4",
     descriptionEs:
-      "1º Semestre · Módulo 4. Sistemas generativos abiertos y propietarios.",
+      "1º Semestre · Módulo 4. Modelos generativos (GANs, VAEs, LLMs, difusión), ecosistemas abiertos y plataformas propietarias, fine-tuning, evaluación y mitigación de errores.",
     descriptionEn:
-      "1st Semester · Module 4. Open-source and proprietary generative AI systems.",
+      "1st Semester · Module 4. Generative models (GANs, VAEs, LLMs, diffusion), open-source & proprietary platforms, fine-tuning, evaluation, and error mitigation.",
+    professors: {
+      M11: "Pablo del Vecchio",
+      M12: "Idir Ouhab",
+    },
+    topics: [
+      {
+        es: "Modelos probabilísticos y redes neuronales generativas como GANs y VAEs",
+        en: "Probabilistic models and generative neural networks (GANs & VAEs)",
+      },
+      {
+        es: "Herramientas de código abierto para el desarrollo de IA generativa",
+        en: "Open-source tools for generative AI development",
+      },
+      {
+        es: "Integración y personalización de modelos preentrenados en entornos abiertos",
+        en: "Integration and customization of pretrained models in open ecosystems",
+      },
+      {
+        es: "Plataformas propietarias para el desarrollo y despliegue de modelos generativos",
+        en: "Proprietary platforms for building and deploying generative models",
+      },
+      {
+        es: "Configuración, entrenamiento y ajuste de modelos en entornos propietarios",
+        en: "Configuration, training, and fine-tuning in proprietary environments",
+      },
+      {
+        es: "Evaluación, mejora de rendimiento y mitigación de errores en IA generativa",
+        en: "Evaluation, performance optimization, and error mitigation in generative AI",
+      },
+    ],
+    passRuleEs:
+      "Calificación final ponderada ≥ 5,0/10 en convocatoria ordinaria o extraordinaria. Si no se supera, debe cursarse de nuevo en su totalidad sin conservar notas parciales.",
+    passRuleEn:
+      "Weighted final grade ≥ 5.0/10 in ordinary or extraordinary sitting. If not passed in either sitting, the full module must be retaken (partial grades do not carry over).",
+    bibliography: [
+      {
+        kind: "basic",
+        citation:
+          "Foster, D. (2023). Generative Deep Learning: Teaching Machines to Paint, Write, Compose, and Play (2nd ed.). O'Reilly Media.",
+      },
+      {
+        kind: "basic",
+        citation:
+          "Alammar, J., & Grootendorst, M. (2024). Hands-On Large Language Models: Language Understanding and Generation. O'Reilly Media.",
+      },
+      {
+        kind: "basic",
+        citation:
+          "Huyen, C. (2025). AI Engineering: Building Applications with Foundation Models. O'Reilly Media.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Raschka, S. (2024). Build a Large Language Model (From Scratch). Manning.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Tunstall, L., von Werra, L., & Wolf, T. (2022). Natural Language Processing with Transformers (rev. ed.). O'Reilly Media.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Goodfellow, I., et al. (2014). Generative adversarial nets. NeurIPS (Vol. 27, pp. 2672–2680).",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Kingma, D. P., & Welling, M. (2014). Auto-encoding variational Bayes. ICLR 2014.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Ho, J., Jain, A., & Abbeel, P. (2020). Denoising diffusion probabilistic models. NeurIPS (Vol. 33, pp. 6840–6851).",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Hu, E. J., et al. (2022). LoRA: Low-rank adaptation of large language models. ICLR 2022.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Lewis, P., et al. (2020). Retrieval-augmented generation for knowledge-intensive NLP tasks. NeurIPS (Vol. 33, pp. 9459–9474).",
+      },
+    ],
+    grading: [
+      {
+        id: "genai-case",
+        unitLabelEs: "Caso / problema",
+        unitLabelEn: "Case / problem",
+        titleEs: "Resolución de caso práctico / problema (evaluación continua)",
+        titleEn: "Applied case / problem assignment (continuous assessment)",
+        weightPercent: 20,
+        type: "task",
+      },
+      {
+        id: "genai-project",
+        unitLabelEs: "Proyecto",
+        unitLabelEn: "Project",
+        titleEs: "Investigaciones y proyectos",
+        titleEn: "Research & project work",
+        weightPercent: 10,
+        type: "task",
+      },
+      {
+        id: "genai-lab",
+        unitLabelEs: "Laboratorio",
+        unitLabelEn: "Lab / Workshop",
+        titleEs: "Cuaderno de prácticas de laboratorio / taller",
+        titleEn: "Lab / workshop practice notebook",
+        weightPercent: 10,
+        type: "task",
+      },
+      {
+        id: "genai-final",
+        unitLabelEs: "Final",
+        unitLabelEn: "Final",
+        titleEs: "Pruebas de evaluación virtuales (examen final)",
+        titleEn: "Virtual final assessment exam",
+        weightPercent: 60,
+        type: "exam",
+        dueDateLabelEs: "10–11 abr 2027 (Pruebas 1º Semestre)",
+        dueDateLabelEn: "Apr 10–11, 2027 (1st Semester Exams)",
+      },
+    ],
     streamUrls: {},
   },
   {
@@ -514,11 +763,141 @@ export const MODULES: ModuleInfo[] = [
     color: "teal",
     category: "core",
     semester: 1,
+    ects: 6,
+    workloadHours: 150,
     canvasUrl: "https://campus.europaeducationgroup.es/courses/173867",
+    guidePdfUrl: "/guides/procesamiento-lenguaje-natural.pdf",
+    guideRef: "d430c4f4",
     descriptionEs:
-      "1º Semestre · Módulo 5. Procesamiento del lenguaje natural.",
+      "1º Semestre · Módulo 5. Tokenización, análisis sintáctico, extracción de características, resolución de ambigüedad semántica y generación de lenguaje natural.",
     descriptionEn:
-      "1st Semester · Module 5. Natural Language Processing.",
+      "1st Semester · Module 5. Tokenization, syntactic analysis, feature extraction, semantic disambiguation, and natural language generation.",
+    professors: {
+      M11: "Aurora Cobo Aguilera",
+      M12: "Mara Chinea Ríos",
+    },
+    topics: [
+      {
+        es: "Técnicas de tokenización y segmentación para el análisis textual",
+        en: "Tokenization and segmentation techniques for text analysis",
+      },
+      {
+        es: "Análisis morfológico y sintáctico de estructuras lingüísticas",
+        en: "Morphological and syntactic analysis of linguistic structures",
+      },
+      {
+        es: "Extracción de características relevantes en textos complejos",
+        en: "Relevant feature extraction from complex text",
+      },
+      {
+        es: "Resolución de ambigüedades semánticas en distintos contextos",
+        en: "Semantic ambiguity resolution across contexts",
+      },
+      {
+        es: "Tecnologías avanzadas para la generación de lenguaje natural",
+        en: "Advanced technologies for natural language generation",
+      },
+      {
+        es: "Integración de técnicas de PLN en aplicaciones prácticas",
+        en: "Integrating NLP techniques into practical applications",
+      },
+    ],
+    passRuleEs:
+      "Calificación final ponderada ≥ 5,0/10 en convocatoria ordinaria o extraordinaria. Si no se supera, debe cursarse de nuevo en su totalidad sin conservar notas parciales.",
+    passRuleEn:
+      "Weighted final grade ≥ 5.0/10 in ordinary or extraordinary sitting. If not passed in either sitting, the full module must be retaken (partial grades do not carry over).",
+    bibliography: [
+      {
+        kind: "basic",
+        citation:
+          "Jurafsky, D., & Martin, J. H. (2026). Speech and Language Processing (3rd ed., online draft). Stanford University.",
+      },
+      {
+        kind: "basic",
+        citation:
+          "Eisenstein, J. (2019). Introduction to Natural Language Processing. MIT Press.",
+      },
+      {
+        kind: "basic",
+        citation:
+          "Tunstall, L., von Werra, L., & Wolf, T. (2022). Natural Language Processing with Transformers (rev. ed.). O'Reilly Media.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Bird, S., Klein, E., & Loper, E. (2009). Natural Language Processing with Python. O'Reilly Media.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Manning, C. D., & Schütze, H. (1999). Foundations of Statistical Natural Language Processing. MIT Press.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Goldberg, Y. (2017). Neural Network Methods for Natural Language Processing. Morgan & Claypool.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Mikolov, T., Chen, K., Corrado, G., & Dean, J. (2013). Efficient estimation of word representations in vector space. arXiv:1301.3781.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Vaswani, A., et al. (2017). Attention is all you need. NeurIPS (Vol. 30, pp. 5998–6008).",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Devlin, J., Chang, M.-W., Lee, K., & Toutanova, K. (2019). BERT: Pre-training of deep bidirectional transformers for language understanding. NAACL-HLT (pp. 4171–4186).",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Gutiérrez-Fandiño, A., et al. (2022). MarIA: Spanish language models. Procesamiento del Lenguaje Natural, 68, 39–60.",
+      },
+    ],
+    grading: [
+      {
+        id: "nlp-case",
+        unitLabelEs: "Caso / problema",
+        unitLabelEn: "Case / problem",
+        titleEs: "Resolución de caso práctico / problema (evaluación continua)",
+        titleEn: "Applied case / problem assignment (continuous assessment)",
+        weightPercent: 20,
+        type: "task",
+      },
+      {
+        id: "nlp-project",
+        unitLabelEs: "Proyecto",
+        unitLabelEn: "Project",
+        titleEs: "Investigaciones y proyectos",
+        titleEn: "Research & project work",
+        weightPercent: 10,
+        type: "task",
+      },
+      {
+        id: "nlp-lab",
+        unitLabelEs: "Laboratorio",
+        unitLabelEn: "Lab / Workshop",
+        titleEs: "Cuaderno de prácticas de laboratorio / taller",
+        titleEn: "Lab / workshop practice notebook",
+        weightPercent: 10,
+        type: "task",
+      },
+      {
+        id: "nlp-final",
+        unitLabelEs: "Final",
+        unitLabelEn: "Final",
+        titleEs: "Pruebas de evaluación virtuales (examen final)",
+        titleEn: "Virtual final assessment exam",
+        weightPercent: 60,
+        type: "exam",
+        dueDateLabelEs: "10–11 abr 2027 (Pruebas 1º Semestre)",
+        dueDateLabelEn: "Apr 10–11, 2027 (1st Semester Exams)",
+      },
+    ],
     streamUrls: {},
   },
 
@@ -572,9 +951,145 @@ export const MODULES: ModuleInfo[] = [
     color: "cyan",
     category: "core",
     semester: 2,
+    ects: 6,
+    workloadHours: 150,
     canvasUrl: "https://campus.europaeducationgroup.es/courses/173853",
-    descriptionEs: "2º Semestre · Módulo 6. Visión por computador.",
-    descriptionEn: "2nd Semester · Module 6. Computer Vision.",
+    guidePdfUrl: "/guides/computer-vision.pdf",
+    guideRef: "d1c4dafd",
+    descriptionEs:
+      "2º Semestre · Módulo 6. Reconocimiento de objetos, segmentación, seguimiento de movimiento, extracción de características y modelos generativos aplicados a visión por computador.",
+    descriptionEn:
+      "2nd Semester · Module 6. Object recognition, segmentation, motion tracking, visual feature extraction, and generative models applied to computer vision.",
+    professors: {
+      M11: "Jorge López Fresco",
+    },
+    topics: [
+      {
+        es: "Técnicas de reconocimiento de objetos en imágenes y vídeos",
+        en: "Object recognition techniques in images and videos",
+      },
+      {
+        es: "Métodos de segmentación para análisis detallado de imágenes",
+        en: "Segmentation methods for detailed image analysis",
+      },
+      {
+        es: "Algoritmos de detección y seguimiento de movimiento",
+        en: "Motion detection and tracking algorithms",
+      },
+      {
+        es: "Reconocimiento de patrones visuales y extracción de características",
+        en: "Visual pattern recognition and feature extraction",
+      },
+      {
+        es: "Modelos generativos aplicados a la visión por computadora",
+        en: "Generative models applied to computer vision",
+      },
+      {
+        es: "Aplicaciones prácticas de visión artificial en distintos sectores",
+        en: "Practical computer vision applications across industries",
+      },
+    ],
+    passRuleEs:
+      "Calificación final ponderada ≥ 5,0/10 en convocatoria ordinaria o extraordinaria. Si no se supera, debe cursarse de nuevo en su totalidad sin conservar notas parciales.",
+    passRuleEn:
+      "Weighted final grade ≥ 5.0/10 in ordinary or extraordinary sitting. If not passed in either sitting, the full module must be retaken (partial grades do not carry over).",
+    bibliography: [
+      {
+        kind: "basic",
+        citation:
+          "Szeliski, R. (2022). Computer Vision: Algorithms and Applications (2nd ed.). Springer.",
+      },
+      {
+        kind: "basic",
+        citation:
+          "Torralba, A., Isola, P., & Freeman, W. T. (2024). Foundations of Computer Vision. MIT Press.",
+      },
+      {
+        kind: "basic",
+        citation:
+          "Prince, S. J. D. (2012). Computer Vision: Models, Learning, and Inference. Cambridge University Press.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "He, K., Zhang, X., Ren, S., & Sun, J. (2016). Deep residual learning for image recognition. CVPR (pp. 770–778).",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Redmon, J., Divvala, S., Girshick, R., & Farhadi, A. (2016). You only look once: Unified, real-time object detection. CVPR (pp. 779–788).",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Ronneberger, O., Fischer, P., & Brox, T. (2015). U-Net: Convolutional networks for biomedical image segmentation. MICCAI 2015 (pp. 234–241).",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "He, K., Gkioxari, G., Dollár, P., & Girshick, R. (2017). Mask R-CNN. ICCV (pp. 2961–2969).",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Bewley, A., Ge, Z., Ott, L., Ramos, F., & Upcroft, B. (2016). Simple online and realtime tracking. ICIP (pp. 3464–3468).",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Dosovitskiy, A., et al. (2021). An image is worth 16x16 words: Transformers for image recognition at scale. ICLR 2021.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Rombach, R., et al. (2022). High-resolution image synthesis with latent diffusion models. CVPR (pp. 10684–10695).",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Kirillov, A., et al. (2023). Segment Anything. ICCV (pp. 4015–4026).",
+      },
+    ],
+    grading: [
+      {
+        id: "cv-case",
+        unitLabelEs: "Caso / problema",
+        unitLabelEn: "Case / problem",
+        titleEs: "Resolución de caso práctico / problema (evaluación continua)",
+        titleEn: "Applied case / problem assignment (continuous assessment)",
+        weightPercent: 20,
+        type: "task",
+      },
+      {
+        id: "cv-project",
+        unitLabelEs: "Proyecto",
+        unitLabelEn: "Project",
+        titleEs: "Investigaciones y proyectos",
+        titleEn: "Research & project work",
+        weightPercent: 10,
+        type: "task",
+      },
+      {
+        id: "cv-lab",
+        unitLabelEs: "Laboratorio",
+        unitLabelEn: "Lab / Workshop",
+        titleEs: "Cuaderno de prácticas de laboratorio / taller",
+        titleEn: "Lab / workshop practice notebook",
+        weightPercent: 10,
+        type: "task",
+      },
+      {
+        id: "cv-final",
+        unitLabelEs: "Final",
+        unitLabelEn: "Final",
+        titleEs: "Pruebas de evaluación virtuales (examen final)",
+        titleEn: "Virtual final assessment exam",
+        weightPercent: 60,
+        type: "exam",
+        dueDateLabelEs: "10–11 jul 2027 (Pruebas 2º Semestre)",
+        dueDateLabelEn: "Jul 10–11, 2027 (2nd Semester Exams)",
+      },
+    ],
     streamUrls: {},
   },
   {
@@ -587,11 +1102,135 @@ export const MODULES: ModuleInfo[] = [
     color: "rose",
     category: "core",
     semester: 2,
+    ects: 6,
+    workloadHours: 150,
     canvasUrl: "https://campus.europaeducationgroup.es/courses/173854",
+    guidePdfUrl: "/guides/ia-ciberseguridad.pdf",
+    guideRef: "d3e56ca0",
     descriptionEs:
-      "2º Semestre · Módulo 7. Inteligencia Artificial aplicada a la ciberseguridad.",
+      "2º Semestre · Módulo 7. Amenazas digitales, detección de anomalías e intrusiones basadas en IA, respuestas automáticas, deep learning en seguridad y mitigación de vulnerabilidades.",
     descriptionEn:
-      "2nd Semester · Module 7. Artificial Intelligence applied to cybersecurity.",
+      "2nd Semester · Module 7. Digital threats, AI-driven anomaly & intrusion detection, automated incident response, deep learning in cybersecurity, and vulnerability mitigation.",
+    professors: {
+      M11: "Lidia Contreras Ochando & Daniel Stanislowsky",
+    },
+    topics: [
+      {
+        es: "Fundamentos de ciberseguridad y tipos de amenazas digitales",
+        en: "Cybersecurity fundamentals and types of digital threats",
+      },
+      {
+        es: "Técnicas de detección de anomalías y análisis de comportamiento",
+        en: "Anomaly detection and behavioral analysis techniques",
+      },
+      {
+        es: "Sistemas de detección de intrusiones basados en inteligencia artificial",
+        en: "AI-based intrusion detection systems (IDS)",
+      },
+      {
+        es: "Modelos predictivos y respuestas automáticas ante incidentes",
+        en: "Predictive models and automated incident response",
+      },
+      {
+        es: "Aplicación de redes neuronales y deep learning en ciberseguridad",
+        en: "Neural networks and deep learning applied to cybersecurity",
+      },
+      {
+        es: "Estrategias de mitigación de vulnerabilidades mediante IA entrenada",
+        en: "Vulnerability mitigation strategies using trained AI models",
+      },
+    ],
+    passRuleEs:
+      "Calificación final ponderada ≥ 5,0/10 en convocatoria ordinaria o extraordinaria. Si no se supera, debe cursarse de nuevo en su totalidad sin conservar notas parciales.",
+    passRuleEn:
+      "Weighted final grade ≥ 5.0/10 in ordinary or extraordinary sitting. If not passed in either sitting, the full module must be retaken (partial grades do not carry over).",
+    bibliography: [
+      {
+        kind: "basic",
+        citation:
+          "Chio, C., & Freeman, D. (2018). Machine Learning and Security: Protecting Systems with Data and Algorithms. O'Reilly Media.",
+      },
+      {
+        kind: "basic",
+        citation:
+          "Saxe, J., & Sanders, H. (2018). Malware Data Science: Attack Detection and Attribution. No Starch Press.",
+      },
+      {
+        kind: "basic",
+        citation:
+          "Apruzzese, G., et al. (2023). The role of machine learning in cybersecurity. Digital Threats: Research and Practice, 4(1), 1–38.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Arp, D., et al. (2022). Dos and don'ts of machine learning in computer security. 31st USENIX Security Symposium (pp. 3971–3988).",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Buczak, A. L., & Guven, E. (2016). A survey of data mining and machine learning methods for cyber security intrusion detection. IEEE Comm. Surveys & Tutorials, 18(2), 1153–1176.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Sommer, R., & Paxson, V. (2010). Outside the closed world: On using machine learning for network intrusion detection. IEEE S&P (pp. 305–316).",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Sharafaldin, I., Lashkari, A. H., & Ghorbani, A. A. (2018). Toward generating a new intrusion detection dataset and intrusion traffic characterization. ICISSP (pp. 108–116).",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Biggio, B., & Roli, F. (2018). Wild patterns: Ten years after the rise of adversarial machine learning. Pattern Recognition, 84, 317–331.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Vassilev, A., et al. (2025). Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations (NIST AI 100-2e2025). NIST.",
+      },
+    ],
+    grading: [
+      {
+        id: "ciber-case",
+        unitLabelEs: "Caso / problema",
+        unitLabelEn: "Case / problem",
+        titleEs: "Resolución de caso práctico / problema (evaluación continua)",
+        titleEn: "Applied case / problem assignment (continuous assessment)",
+        weightPercent: 20,
+        type: "task",
+      },
+      {
+        id: "ciber-project",
+        unitLabelEs: "Proyecto",
+        unitLabelEn: "Project",
+        titleEs: "Investigaciones y proyectos",
+        titleEn: "Research & project work",
+        weightPercent: 10,
+        type: "task",
+      },
+      {
+        id: "ciber-lab",
+        unitLabelEs: "Laboratorio",
+        unitLabelEn: "Lab / Workshop",
+        titleEs: "Cuaderno de prácticas de laboratorio / taller",
+        titleEn: "Lab / workshop practice notebook",
+        weightPercent: 10,
+        type: "task",
+      },
+      {
+        id: "ciber-final",
+        unitLabelEs: "Final",
+        unitLabelEn: "Final",
+        titleEs: "Pruebas de evaluación virtuales (examen final)",
+        titleEn: "Virtual final assessment exam",
+        weightPercent: 60,
+        type: "exam",
+        dueDateLabelEs: "10–11 jul 2027 (Pruebas 2º Semestre)",
+        dueDateLabelEn: "Jul 10–11, 2027 (2nd Semester Exams)",
+      },
+    ],
     streamUrls: {},
   },
   {
@@ -604,11 +1243,137 @@ export const MODULES: ModuleInfo[] = [
     color: "amber",
     category: "core",
     semester: 2,
+    ects: 6,
+    workloadHours: 150,
     canvasUrl: "https://campus.europaeducationgroup.es/courses/173856",
+    guidePdfUrl: "/guides/ia-sociedad-empresa.pdf",
+    guideRef: "0ac26ccd",
     descriptionEs:
-      "2º Semestre · Módulo 8. Ética, impacto empresarial y social de la IA.",
+      "2º Semestre · Módulo 8. Aplicaciones de IA en salud, finanzas, educación, comercio y logística; estrategia empresarial, EU AI Act, GDPR, ética y sostenibilidad.",
     descriptionEn:
-      "2nd Semester · Module 8. Ethics, business, and societal impact of AI.",
+      "2nd Semester · Module 8. AI applications in healthcare, finance, education, retail & logistics; business strategy, EU AI Act, GDPR, ethics, and sustainability.",
+    professors: {
+      M11: "Miguel Ángel Torres",
+      M12: "Sonia Montagud Gregori",
+    },
+    topics: [
+      {
+        es: "Ámbitos de aplicación de la IA en sectores empresariales y sociales",
+        en: "AI application domains across business and societal sectors",
+      },
+      {
+        es: "Soluciones basadas en IA para la toma de decisiones y análisis de riesgos",
+        en: "AI-driven solutions for decision-making and risk analysis",
+      },
+      {
+        es: "Aplicaciones de IA en salud, finanzas, educación y recursos humanos",
+        en: "AI applications in healthcare, finance, education, and HR",
+      },
+      {
+        es: "Sistemas inteligentes en comercio, marketing y atención al cliente",
+        en: "Intelligent systems in retail, marketing, and customer service",
+      },
+      {
+        es: "Optimización de procesos en manufactura, logística y transporte",
+        en: "Process optimization in manufacturing, logistics, and transport",
+      },
+      {
+        es: "Impacto de la IA en la transformación digital y la sostenibilidad",
+        en: "Impact of AI on digital transformation and sustainability",
+      },
+    ],
+    passRuleEs:
+      "Calificación final ponderada ≥ 5,0/10 en convocatoria ordinaria o extraordinaria. Si no se supera, debe cursarse de nuevo en su totalidad sin conservar notas parciales.",
+    passRuleEn:
+      "Weighted final grade ≥ 5.0/10 in ordinary or extraordinary sitting. If not passed in either sitting, the full module must be retaken (partial grades do not carry over).",
+    bibliography: [
+      {
+        kind: "basic",
+        citation:
+          "Agrawal, A., Gans, J., & Goldfarb, A. (2022). Prediction Machines: The Simple Economics of Artificial Intelligence (updated ed.). Harvard Business Review Press.",
+      },
+      {
+        kind: "basic",
+        citation:
+          "Iansiti, M., & Lakhani, K. R. (2020). Competing in the Age of AI: Strategy and Leadership When Algorithms and Networks Run the World. Harvard Business Review Press.",
+      },
+      {
+        kind: "basic",
+        citation:
+          "Reglamento (UE) 2024/1689 del Parlamento Europeo y del Consejo (EU AI Act / Reglamento de Inteligencia Artificial), DOUE 12 jul 2024.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Davenport, T. H. (2018). The AI Advantage: How to Put the Artificial Intelligence Revolution to Work. MIT Press.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Huyen, C. (2022). Designing Machine Learning Systems. O'Reilly Media.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Sculley, D., et al. (2015). Hidden technical debt in machine learning systems. NeurIPS (Vol. 28, pp. 2503–2511).",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Topol, E. J. (2019). High-performance medicine: The convergence of human and artificial intelligence. Nature Medicine, 25(1), 44–56.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Floridi, L., et al. (2018). AI4People—An ethical framework for a good AI society. Minds and Machines, 28(4), 689–707.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Crawford, K. (2021). Atlas of AI: Power, Politics, and the Planetary Costs of Artificial Intelligence. Yale University Press.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "O'Neil, C. (2016). Weapons of Math Destruction. Crown.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Reglamento (UE) 2016/679 (RGPD / GDPR), DOUE L 119, 4 mayo 2016.",
+      },
+    ],
+    grading: [
+      {
+        id: "soc-reports",
+        unitLabelEs: "Informes",
+        unitLabelEn: "Reports",
+        titleEs: "Informes y escritos",
+        titleEn: "Written reports & essays",
+        weightPercent: 20,
+        type: "task",
+      },
+      {
+        id: "soc-case",
+        unitLabelEs: "Caso / problema",
+        unitLabelEn: "Case / problem",
+        titleEs: "Resolución de caso práctico / problema",
+        titleEn: "Applied case / problem assignment",
+        weightPercent: 20,
+        type: "task",
+      },
+      {
+        id: "soc-final",
+        unitLabelEs: "Final",
+        unitLabelEn: "Final",
+        titleEs: "Pruebas de evaluación virtuales (examen final)",
+        titleEn: "Virtual final assessment exam",
+        weightPercent: 60,
+        type: "exam",
+        dueDateLabelEs: "10–11 jul 2027 (Pruebas 2º Semestre)",
+        dueDateLabelEn: "Jul 10–11, 2027 (2nd Semester Exams)",
+      },
+    ],
     streamUrls: {},
   },
   {
@@ -621,11 +1386,141 @@ export const MODULES: ModuleInfo[] = [
     color: "blue",
     category: "core",
     semester: 2,
+    ects: 6,
+    workloadHours: 150,
     canvasUrl: "https://campus.europaeducationgroup.es/courses/173862",
+    guidePdfUrl: "/guides/metodologia-investigacion.pdf",
+    guideRef: "1c51d6e1",
     descriptionEs:
-      "2º Semestre · Itinerario electivo (Prácticas en empresa o Metodología de la Investigación para I+D / doctorado).",
+      "2º Semestre · Optativa (itinerario I+D / doctorado frente a Prácticas en empresa). Diseño experimental en IA, análisis de datos, redacción científica, reproducibilidad y ética investigadora.",
     descriptionEn:
-      "2nd Semester · Elective track (Company Internship or Research Methodology for R&D / PhD).",
+      "2nd Semester · Elective (R&D / PhD track vs. Company Internship). Experimental design in AI, data analysis, scientific writing, reproducibility, and research ethics.",
+    professors: {
+      M11: "Víctor Yeste",
+      M12: "Víctor Yeste",
+    },
+    topics: [
+      {
+        es: "Fundamentos epistemológicos y metodológicos de la investigación científica",
+        en: "Epistemological and methodological foundations of scientific research",
+      },
+      {
+        es: "Diseño de proyectos de investigación en inteligencia artificial",
+        en: "Designing research projects in artificial intelligence",
+      },
+      {
+        es: "Técnicas de recolección, análisis e interpretación de datos",
+        en: "Data collection, analysis, and interpretation techniques",
+      },
+      {
+        es: "Redacción académica y elaboración de informes científicos",
+        en: "Academic writing and scientific report preparation",
+      },
+      {
+        es: "Ética y responsabilidad en la investigación con IA",
+        en: "Ethics and responsibility in AI research",
+      },
+      {
+        es: "Evaluación crítica de fuentes y resultados científicos",
+        en: "Critical evaluation of scientific sources and findings",
+      },
+    ],
+    passRuleEs:
+      "Calificación final ponderada ≥ 5,0/10 en convocatoria ordinaria o extraordinaria. Si no se supera, debe cursarse de nuevo en su totalidad sin conservar notas parciales.",
+    passRuleEn:
+      "Weighted final grade ≥ 5.0/10 in ordinary or extraordinary sitting. If not passed in either sitting, the full module must be retaken (partial grades do not carry over).",
+    bibliography: [
+      {
+        kind: "basic",
+        citation:
+          "Hernández-Sampieri, R., & Mendoza Torres, C. P. (2018). Metodología de la investigación: Las rutas cuantitativa, cualitativa y mixta. McGraw-Hill.",
+      },
+      {
+        kind: "basic",
+        citation:
+          "Zobel, J. (2014). Writing for Computer Science (3rd ed.). Springer.",
+      },
+      {
+        kind: "basic",
+        citation:
+          "Wohlin, C., et al. (2024). Experimentation in Software Engineering (2nd ed.). Springer.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Booth, W. C., Colomb, G. G., Williams, J. M., Bizup, J., & FitzGerald, W. T. (2024). The Craft of Research (5th ed.). University of Chicago Press.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Cohen, P. R. (1995). Empirical Methods for Artificial Intelligence. MIT Press.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Demšar, J. (2006). Statistical comparisons of classifiers over multiple data sets. JMLR, 7, 1–30.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Dror, R., Baumer, G., Shlomov, S., & Reichart, R. (2018). The hitchhiker's guide to testing statistical significance in NLP. ACL (pp. 1383–1392).",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Kitchenham, B., & Charters, S. (2007). Guidelines for performing systematic literature reviews in software engineering (EBSE-2007-01).",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Pineau, J., et al. (2021). Improving reproducibility in machine learning research (NeurIPS 2019 Reproducibility Program). JMLR, 22(164), 1–20.",
+      },
+      {
+        kind: "complementary",
+        citation:
+          "Gebru, T., et al. (2021). Datasheets for datasets. Communications of the ACM, 64(12), 86–92.",
+      },
+    ],
+    grading: [
+      {
+        id: "met-project",
+        unitLabelEs: "Proyecto",
+        unitLabelEn: "Project",
+        titleEs: "Investigaciones y proyectos",
+        titleEn: "Research & project work",
+        weightPercent: 20,
+        type: "task",
+      },
+      {
+        id: "met-oral",
+        unitLabelEs: "Exposición",
+        unitLabelEn: "Presentation",
+        titleEs: "Exposiciones orales",
+        titleEn: "Oral presentations",
+        weightPercent: 10,
+        type: "task",
+      },
+      {
+        id: "met-reports",
+        unitLabelEs: "Informes",
+        unitLabelEn: "Reports",
+        titleEs: "Informes y escritos",
+        titleEn: "Written reports",
+        weightPercent: 10,
+        type: "task",
+      },
+      {
+        id: "met-final",
+        unitLabelEs: "Final",
+        unitLabelEn: "Final",
+        titleEs: "Pruebas de evaluación virtuales (examen final)",
+        titleEn: "Virtual final assessment exam",
+        weightPercent: 60,
+        type: "exam",
+        dueDateLabelEs: "10–11 jul 2027 (Pruebas 2º Semestre)",
+        dueDateLabelEn: "Jul 10–11, 2027 (2nd Semester Exams)",
+      },
+    ],
     streamUrls: {},
   },
 
