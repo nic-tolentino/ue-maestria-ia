@@ -6,6 +6,7 @@ interface NotifyPayload {
   priority: "default" | "urgent";
   tags: string[];
   clickUrl?: string;
+  actions?: string;
 }
 
 /**
@@ -42,6 +43,9 @@ async function dispatchNotification(payload: NotifyPayload): Promise<void> {
     };
     if (payload.clickUrl) {
       headers.Click = payload.clickUrl;
+    }
+    if (payload.actions) {
+      headers.Actions = payload.actions;
     }
     tasks.push(
       fetch(`${ntfyServer}/${encodeURIComponent(ntfyTopic)}`, {
@@ -98,7 +102,7 @@ function escapeTelegram(s: string): string {
   return s.replace(/[_*`[\]]/g, "\\$&");
 }
 
-function buildSessionUrl(sessionId: string): string | undefined {
+function getSiteBaseUrl(): string | undefined {
   const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim();
   const vercelProd = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
   const vercelPreview = process.env.VERCEL_URL?.trim();
@@ -106,21 +110,39 @@ function buildSessionUrl(sessionId: string): string | undefined {
   const rawBase = explicit || vercelProd || vercelPreview;
   if (!rawBase) return undefined;
 
-  const normalized = /^https?:\/\//i.test(rawBase)
+  return /^https?:\/\//i.test(rawBase)
     ? rawBase.replace(/\/+$/, "")
     : `https://${rawBase.replace(/\/+$/, "")}`;
+}
 
-  return `${normalized}/?session=${encodeURIComponent(sessionId)}`;
+function buildSessionUrl(sessionId: string): string | undefined {
+  const base = getSiteBaseUrl();
+  return base ? `${base}/?session=${encodeURIComponent(sessionId)}` : undefined;
+}
+
+function buildAdminUrl(): string | undefined {
+  const base = getSiteBaseUrl();
+  return base ? `${base}/admin` : undefined;
 }
 
 export async function notifyNewComment(comment: SessionComment): Promise<void> {
   const linkNote = comment.sharedUrl ? `\nLink: ${comment.sharedUrl}` : "";
+  const sessionUrl = buildSessionUrl(comment.sessionId);
+  const adminUrl = buildAdminUrl();
+  const actions = [
+    sessionUrl ? `view, Open Class, ${sessionUrl}` : null,
+    adminUrl ? `view, Admin, ${adminUrl}` : null,
+  ]
+    .filter(Boolean)
+    .join("; ");
+
   await dispatchNotification({
     title: `New comment [${comment.stream}] · ${comment.sessionId}`,
     message: `${comment.authorName}: ${comment.body}${linkNote}`,
     priority: "default",
     tags: comment.sharedUrl ? ["link", "speech_balloon"] : ["speech_balloon"],
-    clickUrl: buildSessionUrl(comment.sessionId),
+    clickUrl: sessionUrl,
+    actions: actions || undefined,
   });
 }
 
@@ -130,11 +152,21 @@ export async function notifyCommentReported(
   details?: string,
 ): Promise<void> {
   const detailLine = details ? `\nDetails: ${details}` : "";
+  const adminUrl = buildAdminUrl();
+  const sessionUrl = buildSessionUrl(comment.sessionId);
+  const actions = [
+    adminUrl ? `view, Triage in Admin, ${adminUrl}` : null,
+    sessionUrl ? `view, Open Class, ${sessionUrl}` : null,
+  ]
+    .filter(Boolean)
+    .join("; ");
+
   await dispatchNotification({
     title: `REPORTED comment (${comment.reportCount}x) · ${comment.sessionId}`,
     message: `Reason: ${reason}${detailLine}\nAuthor: ${comment.authorName} [${comment.stream}]\nText: "${comment.body}"`,
     priority: "urgent",
     tags: ["rotating_light", "warning"],
-    clickUrl: buildSessionUrl(comment.sessionId),
+    clickUrl: adminUrl ?? sessionUrl,
+    actions: actions || undefined,
   });
 }

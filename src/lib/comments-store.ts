@@ -173,6 +173,29 @@ const DEV_SEED_COMMENTS: SessionComment[] = [
     reportCount: 0,
     createdAt: "2026-11-25T19:30:00.000Z",
   },
+  {
+    id: "dev-seed-5",
+    sessionId: "2026-12-03-thu",
+    authorName: "SpamBot (Mock Dev)",
+    stream: "M12",
+    body: "[DEV MOCK] Example reported comment so you can test the /admin triage queue locally.",
+    sharedUrl: "https://example.com/broken-link",
+    upvotes: 0,
+    reportCount: 2,
+    reports: [
+      {
+        reason: "wrong_link",
+        details: "This link does not open Teams.",
+        createdAt: "2026-11-26T11:30:00.000Z",
+      },
+      {
+        reason: "spam",
+        details: "Looks like a test/spam post.",
+        createdAt: "2026-11-26T11:45:00.000Z",
+      },
+    ],
+    createdAt: "2026-11-26T11:20:00.000Z",
+  },
 ];
 
 let memoryStore: SessionComment[] | null = null;
@@ -452,4 +475,88 @@ export async function deleteComment(commentId: string): Promise<boolean> {
   if (next.length === all.length) return false;
   await persistMockStore(next);
   return true;
+}
+
+export interface AdminReportItem {
+  id: string;
+  commentId: string;
+  reason: ReportReason;
+  details?: string;
+  createdAt: string;
+}
+
+export interface AdminModerationData {
+  storageMode: StorageMode;
+  comments: SessionComment[];
+  reports: AdminReportItem[];
+}
+
+interface DbReportRow {
+  id: string;
+  comment_id: string;
+  reason: ReportReason;
+  details: string | null;
+  created_at: string | Date;
+}
+
+export async function listAdminModerationData(): Promise<AdminModerationData> {
+  const storageMode = getStorageMode();
+
+  if (storageMode === "neon") {
+    await ensureNeonSchema();
+    const sql = getNeonClient();
+    const [commentRows, reportRows] = (await Promise.all([
+      sql`
+        SELECT id, session_id, author_name, stream, body, shared_url, upvotes, report_count, is_pinned, created_at
+        FROM comments
+        ORDER BY created_at DESC
+      `,
+      sql`
+        SELECT id, comment_id, reason, details, created_at
+        FROM comment_reports
+        ORDER BY created_at DESC
+      `,
+    ])) as [DbCommentRow[], DbReportRow[]];
+
+    const reports: AdminReportItem[] = reportRows.map((r) => ({
+      id: r.id,
+      commentId: r.comment_id,
+      reason: r.reason,
+      details: r.details ?? undefined,
+      createdAt:
+        r.created_at instanceof Date
+          ? r.created_at.toISOString()
+          : new Date(r.created_at).toISOString(),
+    }));
+
+    return {
+      storageMode,
+      comments: commentRows.map(rowToComment),
+      reports,
+    };
+  }
+
+  const all = await readMockStore();
+  const comments = [...all].sort((a, b) =>
+    b.createdAt.localeCompare(a.createdAt),
+  );
+  const reports: AdminReportItem[] = [];
+  for (const comment of comments) {
+    (comment.reports ?? []).forEach((rep, idx) => {
+      reports.push({
+        id: `mock-rep-${comment.id}-${idx}`,
+        commentId: comment.id,
+        reason: rep.reason,
+        details: rep.details,
+        createdAt: rep.createdAt,
+      });
+    });
+  }
+  reports.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+
+  return {
+    storageMode,
+    comments,
+    reports,
+  };
 }

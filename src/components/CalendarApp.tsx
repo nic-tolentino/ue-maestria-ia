@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import {
   BookOpen,
   Calendar as CalendarIcon,
@@ -12,7 +13,6 @@ import {
   ListTodo,
   Lock,
   ShieldCheck,
-  X,
 } from "lucide-react";
 import { SESSIONS } from "@/data/sessions";
 import type { StorageMode } from "@/lib/comments-store";
@@ -58,12 +58,8 @@ export function CalendarApp({
   const [viewMode, setViewMode] = useState<CalendarViewMode>("week");
   const [selectedUnitId, setSelectedUnitId] = useState<string | null>(null);
 
-  // Admin moderation state (stored only in sessionStorage for organizer convenience)
+  // Admin moderation session (unlocked via /admin, kept in sessionStorage)
   const [adminSecret, setAdminSecret] = useState<string | null>(null);
-  const [showAdminModal, setShowAdminModal] = useState(false);
-  const [adminInput, setAdminInput] = useState("");
-  const [adminError, setAdminError] = useState<string | null>(null);
-  const [adminVerifying, setAdminVerifying] = useState(false);
 
   // Calendar navigation state
   const [monthYear, setMonthYear] = useState({
@@ -232,43 +228,6 @@ export function CalendarApp({
   const handleCommentDeleted = useCallback((commentId: string) => {
     setComments((prev) => prev.filter((c) => c.id !== commentId));
   }, []);
-
-  const handleUnlockAdmin = useCallback(
-    async (e: React.FormEvent) => {
-      e.preventDefault();
-      setAdminError(null);
-      const candidate = adminInput.trim();
-      if (!candidate) return;
-      setAdminVerifying(true);
-      try {
-        const res = await fetch("/api/admin/verify", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ secret: candidate }),
-        });
-        if (!res.ok) {
-          const data = (await res.json().catch(() => ({}))) as {
-            error?: string;
-          };
-          setAdminError(data.error || t.adminInvalidSecret);
-          return;
-        }
-        setAdminSecret(candidate);
-        setAdminInput("");
-        setShowAdminModal(false);
-        try {
-          sessionStorage.setItem(ADMIN_SESSION_KEY, candidate);
-        } catch {
-          // ignore
-        }
-      } catch {
-        setAdminError("Network error");
-      } finally {
-        setAdminVerifying(false);
-      }
-    },
-    [adminInput, t.adminInvalidSecret],
-  );
 
   const handleLockAdmin = useCallback(() => {
     setAdminSecret(null);
@@ -501,10 +460,13 @@ export function CalendarApp({
         <div className="flex items-center gap-2">
           {adminSecret ? (
             <>
-              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 font-semibold text-emerald-700">
+              <Link
+                href="/admin"
+                className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 font-semibold text-emerald-700 transition hover:bg-emerald-100"
+              >
                 <ShieldCheck className="h-3 w-3" />
                 {t.adminActive}
-              </span>
+              </Link>
               <button
                 type="button"
                 onClick={handleLockAdmin}
@@ -514,18 +476,14 @@ export function CalendarApp({
               </button>
             </>
           ) : (
-            <button
-              type="button"
-              onClick={() => {
-                setAdminError(null);
-                setShowAdminModal(true);
-              }}
+            <Link
+              href="/admin"
               className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
               title={t.adminUnlockTitle}
             >
               <Lock className="h-3 w-3" />
               <span>{t.adminMode}</span>
-            </button>
+            </Link>
           )}
         </div>
       </footer>
@@ -541,66 +499,6 @@ export function CalendarApp({
           defaultStream={streamFilter === "M12" ? "M12" : "M11"}
           onClose={() => setShowSubscribe(false)}
         />
-      )}
-
-      {showAdminModal && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-xs"
-          role="dialog"
-          aria-modal="true"
-        >
-          <div className="w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-5 shadow-xl">
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-slate-700" />
-                <h3 className="text-sm font-bold text-slate-900">
-                  {t.adminUnlockTitle}
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowAdminModal(false)}
-                className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
-                aria-label={t.close}
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-            <p className="mt-1.5 text-xs text-slate-500">{t.adminUnlockHint}</p>
-
-            <form onSubmit={handleUnlockAdmin} className="mt-4 space-y-3">
-              <input
-                type="password"
-                value={adminInput}
-                onChange={(e) => setAdminInput(e.target.value)}
-                placeholder={t.adminSecretPlaceholder}
-                autoFocus
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-900 focus:border-slate-400 focus:bg-white focus:outline-none"
-              />
-              {adminError && (
-                <p className="text-xs font-medium text-rose-600">
-                  {adminError}
-                </p>
-              )}
-              <div className="flex justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => setShowAdminModal(false)}
-                  className="rounded-xl px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-100"
-                >
-                  {t.cancel}
-                </button>
-                <button
-                  type="submit"
-                  disabled={adminVerifying}
-                  className="rounded-xl bg-slate-900 px-4 py-2 text-xs font-semibold text-white transition hover:bg-slate-800 disabled:opacity-50"
-                >
-                  {t.adminUnlockBtn}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
       )}
 
       {selectedSession && (

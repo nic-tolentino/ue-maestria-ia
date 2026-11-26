@@ -8,8 +8,8 @@ Bilingual (**ES / EN**) live class calendar, Microsoft Teams link hub, video rec
 - **Today / Up Next Hero** — live status, Madrid time + automatic local timezone conversion, professor name, recurring Teams join button, and upcoming assignment deadline strip.
 - **Units (`Asignaturas`) Hub** — modules in chronological study order (Aula Tutor, 1st Semester, Cloud Certifications AWS/Azure, 2nd Semester, TFM), direct Canvas links, grading weights, and a **private personal grade tracker** stored only in `localStorage`.
 - **Low-friction Student Comments** — name-only posting, M11 / M12 / Both stream tags, automatic Teams link detection, upvotes, and reporting (auto-hides after 3 reports).
-- **Instant Phone Notifications (`ntfy.sh`)** — normal push on new comments, **urgent** push on reported comments with a tap-to-open deep link to the exact session.
-- **One-tap Admin Moderation** — discreet footer lock button (`ADMIN_SECRET`) to pin official links, clear false reports, or delete spam directly from your phone.
+- **Instant Phone Notifications (`ntfy.sh`)** — normal push on new comments, **urgent** push on reported comments with tap-to-open buttons straight to `/admin` or the exact class session.
+- **Dedicated Admin Dashboard (`/admin`)** — protected by `ADMIN_SECRET`, with a **Reports Triage Queue** (reason, timestamp, reporter details, target comment) and a **Chronological All-Comments Feed** across every session, with search, filters, 1-tap Pin/Unpin, Clear reports, and 2-tap Delete.
 - **Calendar Subscription (`.ics`)** — stream-specific RFC 5545 feed at `/api/calendar.ics?stream=M12` (or `M11`) with 24h reminders for assignments.
 
 ---
@@ -25,15 +25,15 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000) (or [http://localhost:3000/admin](http://localhost:3000/admin) for the moderation dashboard).
 
 ### How Mock Mode Works
 
 - Whenever `DATABASE_URL` is **not set** (or `USE_MOCK_STORE=true`), the app automatically runs in **Dev Mock Mode** (shown as a small badge in the footer):
   - Comments, upvotes, pins, reports, and deletes are saved locally to `.data/comments.json` (git-ignored).
-  - On first launch in `npm run dev`, realistic `[DEV MOCK]` sample comments are automatically seeded so you can immediately test comment threads, sorting, stream badges, and shared links.
+  - On first launch in `npm run dev`, realistic `[DEV MOCK]` sample comments (including a reported fixture) are automatically seeded so you can immediately test comment threads, sorting, stream badges, shared links, and the `/admin` reports triage queue.
   - Phone notifications are logged cleanly to your terminal console (`[NOTIFY:DEFAULT] ...` / `[NOTIFY:URGENT] ...`).
-- **Testing Admin Moderation locally:** click **Admin** in the bottom-right footer and enter **`dev`** (the local development fallback when `ADMIN_SECRET` is unset).
+- **Testing Admin Moderation locally:** visit [`/admin`](http://localhost:3000/admin) (or click **Admin** in the bottom-right footer) and enter **`dev`** (the local development fallback when `ADMIN_SECRET` is unset).
 - **Reset mock data** back to fresh fixtures anytime:
   ```bash
   npm run reset:mock
@@ -62,14 +62,17 @@ Open [http://localhost:3000](http://localhost:3000).
 3. In Vercel → **Settings → Environment Variables**, add:
    - `NTFY_TOPIC` = `ue-ia-alerts-8k3m9p2x`
    - *(Optional)* `NEXT_PUBLIC_SITE_URL` = `https://your-site.vercel.app` *(Vercel's production URL is also auto-detected if omitted)*
-4. Whenever a student posts a comment or reports spam, you'll get a push notification on your phone. Tapping it opens that exact class session directly in the app.
+4. Whenever a student posts a comment or reports spam, you'll get a push notification on your phone. Reported alerts open `/admin` directly for one-tap triage.
 
 ### 3. Enable Organizer Admin Moderation
 
 1. In Vercel → **Settings → Environment Variables**, add a strong passphrase:
    - `ADMIN_SECRET` = `<your-secret-passphrase>`
 2. Redeploy.
-3. On your phone or laptop, click **Admin** in the bottom-right footer, enter your `ADMIN_SECRET`, and every comment will show **Pin / Unpin**, **Clear reports**, and **Delete** controls.
+3. Visit `/admin` (or click **Admin** in the bottom-right footer) on your phone or laptop and sign in with your `ADMIN_SECRET`:
+   - **Reports Queue tab** — every report in chronological order with reason, details, timestamp, target comment, and 1-tap **Pin/Unpin**, **Clear reports**, or **Delete**.
+   - **All Comments tab** — chronological feed across all sessions with search, stream/status filters, and moderation actions.
+   - Signing in on `/admin` also keeps inline moderation controls enabled when jumping straight into any session drawer on `/`.
 
 ---
 
