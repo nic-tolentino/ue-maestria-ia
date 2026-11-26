@@ -70,6 +70,7 @@ export async function GET(request: NextRequest) {
       `Grupo: ${stream}`,
       ...(professor ? [`Profesor/a: ${professor}`] : []),
       `Horario (Madrid): ${session.startTime}–${session.endTime}`,
+      ...(session.notesEs ? [`Notas: ${session.notesEs}`] : []),
     ];
     if (resolved) {
       descParts.push(`Enlace Teams: ${resolved.url}`);
