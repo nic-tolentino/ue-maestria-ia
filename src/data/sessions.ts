@@ -165,12 +165,12 @@ export const SESSIONS: ClassSession[] = [
     startTime: "14:30",
     endTime: "15:30",
     moduleId: "aula-tutor",
-    title: "Reunión informativa · Prácticas Externas",
-    titleEn: "Info Session · External Internships (Prácticas Externas)",
+    title: "Reunión informativa · Prácticas Académicas Externas",
+    titleEn: "Info Session · External Internships (Prácticas Académicas Externas)",
     notesEs:
-      "Aviso de Víctor Manuel Yeste Moreno (puede ser solo para M11 — por confirmar si incluye a M12; enlace de Microsoft Teams pendiente). Participan la Unidad de Prácticas (proceso administrativo, documentación y plazos) y el/la Coordinador/a de Prácticas (procedimiento y criterios de asignación de plazas), seguido de turno de preguntas. La sesión será grabada. Duración estimada (14:30–15:30).",
+      "Para estudiantes de M11 y M12 que hayan elegido la optativa de Prácticas Académicas Externas (frente a Metodología de la Investigación). Aviso publicado por Víctor Manuel Yeste Moreno; enlace de Microsoft Teams pendiente. Participan la Unidad de Prácticas (proceso administrativo, documentación y plazos) y el/la Coordinador/a de Prácticas (procedimiento y criterios de asignación de plazas), seguido de turno de preguntas. La sesión será grabada. Duración estimada (14:30–15:30).",
     notesEn:
-      "Announcement by Víctor Manuel Yeste Moreno (may be M11 only — awaiting confirmation for M12; Microsoft Teams link pending). Speakers: Internships Unit (admin process, required documentation & deadlines) and Internships Coordinator (procedure & placement criteria), followed by Q&A. The session will be recorded. Duration estimated (14:30–15:30).",
+      "For both M11 and M12 students enrolled in the External Academic Internships elective (instead of Research Methodology). Posted by Víctor Manuel Yeste Moreno; Microsoft Teams link pending. Speakers: Internships Unit (admin process, required documentation & deadlines) and Internships Coordinator (procedure & placement criteria), followed by Q&A. The session will be recorded. Duration estimated (14:30–15:30).",
   },
 
   { id: "2026-11-30-mon", date: "2026-11-30", startTime: "18:30", endTime: "20:30", moduleId: "ml" },
